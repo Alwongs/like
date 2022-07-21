@@ -1,9 +1,12 @@
 <template>
     <header class="app-header">
-        <div class="logo-block">
+        <div class="logo-block" @click="goTo('home')">
             ЛАйК
         </div>
         <ul class="nav-block">
+            <li class="nav-item">
+                <a href="#" @click="goTo('about-page')">Обо мне</a>
+            </li>
             <li class="nav-item">
                 <a href="#">Галерея</a>
             </li>
@@ -19,7 +22,11 @@
 
 <script>
 export default {
-
+    methods: {
+        goTo(routeName) {
+            this.$router.push({name: routeName});
+        }
+    }
 }
 </script>
 
