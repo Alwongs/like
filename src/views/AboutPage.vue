@@ -58,9 +58,16 @@ export default {
     border-radius: 15px 15px 0 0;
     box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     padding: 32px;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        padding: 16px;
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        padding: 16px;
+    }      
     @media (max-width: $mobile-max) {
+        padding: 16px;
         border-radius: 0;
     } 
 }
@@ -82,9 +89,13 @@ export default {
     &:before {
         content: '';
         background-image: url('~@/assets/img/svg/smartphone.svg');
+        background-repeat: no-repeat;
         width: 48px;
         height: 48px;
-        margin-right: 16px;
+        margin-right: 8px;
     }
+    @media (max-width: $mobile-max) {
+        font-size: 85%;
+    }     
 }
 </style>

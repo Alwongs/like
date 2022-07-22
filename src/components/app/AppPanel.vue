@@ -16,16 +16,6 @@
                     Галерея
                 </router-link>       
             </li>
-            <li class="nav-item">
-                <router-link :to="'#'">
-                    Мероприятия
-                </router-link>  
-            </li>
-            <li class="nav-item">
-                <router-link :to="'#'">
-                    Контакты
-                </router-link> 
-            </li>
         </ul>
     </header>
 </template>
@@ -49,7 +39,13 @@ export default {
     color: rgb(255, 225, 92);
     height: 64px;
     line-height: 64px;
-    padding: 0 64px;
+    padding: 0 64px;  
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        padding: 0 32px;
+    }       
+    @media (max-width: $mobile-max) {
+        padding: 0 16px;
+    } 
 }
 .nav-block {
     display: flex;    
