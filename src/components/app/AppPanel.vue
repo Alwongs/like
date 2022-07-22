@@ -1,20 +1,30 @@
 <template>
     <header class="app-header">
-        <div class="logo-block" @click="goTo('home')">
-            ЛАйК
+        <div class="logo-block">
+            <router-link :to="'/'">
+                ЛАйК
+            </router-link>                         
         </div>
         <ul class="nav-block">
             <li class="nav-item">
-                <a href="#" @click="goTo('about-page')">Обо мне</a>
+                <router-link :to="'about-page'">
+                    Обо мне
+                </router-link>
             </li>
             <li class="nav-item">
-                <a href="#">Галерея</a>
+                <router-link :to="'#'">
+                    Галерея
+                </router-link>       
             </li>
             <li class="nav-item">
-                <a href="#">Мероприятия</a>
+                <router-link :to="'#'">
+                    Мероприятия
+                </router-link>  
             </li>
             <li class="nav-item">
-                <a href="#">Контакты</a>
+                <router-link :to="'#'">
+                    Контакты
+                </router-link> 
             </li>
         </ul>
     </header>
@@ -22,6 +32,7 @@
 
 <script>
 export default {
+    name: 'AppPanel',
     methods: {
         goTo(routeName) {
             this.$router.push({name: routeName});

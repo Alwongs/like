@@ -1,13 +1,15 @@
 <template>
-    <app-header />
-    <router-view/>
+    <app-panel />
+    <div class="app-container">
+        <router-view/>
+    </div>
 </template>
 
 <script>
-import AppHeader from './components/app/AppHeader.vue'
+import AppPanel from './components/app/AppPanel.vue'
 
 export default {
-  components: { AppHeader },
+    components: { AppPanel },
     name: 'App'
 }
 </script>
@@ -15,14 +17,14 @@ export default {
 <style lang="scss" scoped>
 
 .app-container {
-    width: 830px;
+    width: 64vw;
+    height: 100%;
     margin: 0 auto;
-    padding-top: 64px;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
-        width: 700px;
+        width: 75vw;
     }     
     @media (min-width: $tablet-min) and (max-width: $tablet-max) {
-        width: 630px;
+        width: 90vw;
     }      
     @media (max-width: $mobile-max) {
         width: 100%;
