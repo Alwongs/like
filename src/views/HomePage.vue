@@ -16,11 +16,19 @@ export default {
 
 .footer {
     position: absolute;
-    right: 0;
+    right: 5vw;
     bottom: 0;
     color: white;
-    font-size: 38px;
-    height: 128px;
-    padding: 128px;
+    font-size: 64px;
+    height: 25vh;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        font-size: 44px;
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        font-size: 32px;
+    }      
+    @media (max-width: $mobile-max) {
+        font-size: 28px;
+    }    
 }
 </style>
