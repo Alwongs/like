@@ -11,7 +11,7 @@
                     Обо мне
                 </router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item last-item">
                 <router-link :to="'#'">
                     Галерея
                 </router-link>       
@@ -44,6 +44,7 @@ export default {
         padding: 0 32px;
     }       
     @media (max-width: $mobile-max) {
+        font-size: 130%;
         padding: 0 16px;
     } 
 }
@@ -52,6 +53,9 @@ export default {
 }
 .nav-item {
     margin-right: 16px;
+    &.last-item {
+        margin-right: 0;        
+    }
 }
 a {
     color: rgb(255, 225, 92);

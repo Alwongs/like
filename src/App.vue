@@ -30,7 +30,6 @@ export default {
 }
 .app-container {
     flex: 1 1 auto;
-    position: relative;
     width: 64vw;
     margin: 0 auto;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {

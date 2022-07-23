@@ -1,6 +1,6 @@
 <template>
     <div class="about-page">
-        <main class="content">
+        <div class="content">
             <header class="header">
                 <img 
                     :src="require('@/assets/img/jpg/about_me.jpg')"  
@@ -8,14 +8,15 @@
                     class="img-personal"
                 >
                 <div class="greating">
-                    <h1>Привет, искатель приключений👋</h1>
+                    <h1>Привет, искатель приключений 👋</h1>
 
                     <p>Ты любишь путешествие и ищешь новые ощущения?</p>
                     <p>Тогда ты попал по адресу!</p>
-                    <p class="mb-32">‌‌Я, <b>Лена Пескова</b> 😁👋‌<br>
+                    <p>‌‌Я, <b>Лена Пескова</b> 😁👋‌<br>
                         У меня ты найдешь путешествие на любой вкус:</p>
                 </div>
             </header>
+
             <hr class="divider">
 
             <ul class="type-travel-list">
@@ -90,7 +91,7 @@
                     <h2>⭐ А также организация разнообразных мероприятий от взрослых и детских праздников до всевозможных тематических фотосессий.</h2>
                 </li>
             </ul>
-        </main>
+        </div>
     </div>
 </template>
 
@@ -116,7 +117,7 @@ export default {
         padding: 16px;
     }      
     @media (max-width: $mobile-max) {
-        padding: 16px;
+        padding: 12px;
         border-radius: 0;
     } 
 }
@@ -124,16 +125,18 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 16px;
+    @media (max-width: $mobile-max) {
+        flex-direction: column;
+    }     
 }
 .img-personal {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-}
-.greating {
-    h1 {
-        text-align: left;
-    }
+    @media (max-width: $mobile-max) {
+        width: 120px;
+        height: 120px;
+    }      
 }
 .divider {
     color: #fff;
@@ -141,6 +144,7 @@ export default {
 }
 .content {
     height: calc(100vh - 128px - 64px);
+    overflow-x: hidden;
     overflow-y: scroll;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
         height: calc(100vh - 128px - 32px);
@@ -160,6 +164,7 @@ export default {
     }
     li {
         list-style-type: '- ';
+        font-size: 90%;
     } 
 }
 .call-me {
@@ -176,7 +181,7 @@ export default {
         margin-right: 8px;
     }
     @media (max-width: $mobile-max) {
-        font-size: 85%;
+        //font-size: 85%;
     }     
 }
 
