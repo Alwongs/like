@@ -1,7 +1,7 @@
 <template>     
-    <footer class="footer">
+    <main class="main">
         Я покажу тебе где красиво..
-    </footer>
+    </main>
 </template>
 
 <script>
@@ -14,13 +14,12 @@ export default {
 
 <style lang="scss" scoped>
 
-.footer {
+.main {
     position: absolute;
-    right: 5vw;
-    bottom: 0;
+    bottom: 32px;
+    right: 0;
     color: white;
-    font-size: 64px;
-    height: 25vh;
+    font-size: 48px;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
         font-size: 44px;
     }     

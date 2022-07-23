@@ -4,6 +4,9 @@
     box-sizing: border-box;
     font-family: 'Roboto';
 }
+.border {
+    border: 2px solid red;
+}
 html, body {
     background-image: url('~@/assets/img/jpg/bg_image.jpg');
     background-size: cover;
@@ -11,7 +14,7 @@ html, body {
     font-size: 20px;
 }
 #app {
-    height: calc(100% - 64px);
+    height: 100%;
 }
 h1 {
     text-align: center;
@@ -22,7 +25,12 @@ h1 {
 h2 {
     font-size: 22px;
     font-weight: 500;
-    margin-bottom: 4px;
+    margin-bottom: 24px;
+    //padding-left: 16px;
+}
+h3 {
+    font-size: 20px;
+    font-weight: 500;
     padding-left: 16px;
 }
 a {
@@ -59,6 +67,9 @@ p {
 }
 .mb-16 {
     margin-bottom: 16px;
+}
+.pl-32 {
+    padding-left: 32px;
 }
 .img-content {
     width: 100%;

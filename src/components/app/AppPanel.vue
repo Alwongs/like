@@ -35,9 +35,9 @@ export default {
 
 .app-header {
     display: flex;
+    align-content: center;
     justify-content: space-between;
     color: rgb(255, 225, 92);
-    height: 64px;
     line-height: 64px;
     padding: 0 64px;  
     @media (min-width: $tablet-min) and (max-width: $tablet-max) {
