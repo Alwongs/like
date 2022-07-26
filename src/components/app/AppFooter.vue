@@ -16,7 +16,8 @@ export default {
         text-align: center;
         line-height: 64px;        
         color: white;
-        font-size: 14px;
+        font-size: 12px;
+        font-weight: 300;
         @media (max-width: $mobile-max) {
             display: none;
         }         

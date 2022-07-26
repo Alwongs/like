@@ -8,7 +8,7 @@
         <ul class="nav-block">
             <li class="nav-item">
                 <router-link :to="'about-page'">
-                    Обо мне
+                    О нас
                 </router-link>
             </li>
             <li class="nav-item last-item">

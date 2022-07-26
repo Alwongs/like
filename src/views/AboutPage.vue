@@ -125,6 +125,12 @@ export default {
     display: flex;
     align-items: center;
     margin-bottom: 16px;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        justify-content: space-around;
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        justify-content: space-around;
+    }     
     @media (max-width: $mobile-max) {
         flex-direction: column;
     }     

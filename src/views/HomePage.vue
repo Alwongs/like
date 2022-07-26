@@ -1,7 +1,10 @@
 <template> 
     <main class="main">
+        <service-list />
+
         <div class="content-desktop">
-            Я покажу тебе где красиво..
+            <h1>"ЛАйК"</h1>
+            <p>Клуб активного отдыха</p>
         </div>
         <div class="content-mobile">
             <p>Я</p>
@@ -12,9 +15,10 @@
 </template>
 
 <script>
-
+import ServiceList from '@/components/home/ServiceList.vue'
 
 export default {
+    components: { ServiceList },
     name: 'Home'
 }
 </script>
@@ -22,23 +26,28 @@ export default {
 <style lang="scss" scoped>
 
 .main {
-    position: relative; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     height: 100%;  
     color: white; 
 }
-
 .content-desktop {
-    position: absolute;
-    font-size: 44px;
-    right: 0;
-    bottom: 32px;
-    padding-left: 16px;
+    font-size: 44px;    
+    h1 {
+        padding-left: 50%;
+    }
+    text-align: right;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        font-size: 38px;  
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        font-size: 34px;  
+    }     
     @media (max-width: $mobile-max) {
         display: none;
     }  
 }
-  
-
 .content-mobile {
     font-size: 240%;
     left: 0;
