@@ -64,12 +64,19 @@ export default {
 .service-list {
     display: flex;
     justify-content: space-around;
-
+    @media (max-width: $mobile-max) {
+        flex-direction: column;
+        padding: 32px;
+    } 
 }
 .service-item {
     text-align: center;
     width: 120px;    
     cursor: pointer; 
+    @media (max-width: $mobile-max) {
+        width: 30%;
+        margin-bottom: 16px;
+    }      
 }
 .service-item:hover {
     img {
@@ -81,14 +88,22 @@ export default {
 }  
 .service-link {
     color: white;
+    @media (max-width: $mobile-max) {
+        font-size: 150%;
+        text-align: center;
+    } 
 }
 .icon {
     width: 90px;
     height: 90px;
-    background-color: #fff;
     border-radius: 50%;
     border: 2px solid white;
     margin: 0 auto;
     margin-bottom: 6px;
+    @media (max-width: $mobile-max) {
+        width: 100%;
+        height: auto;
+        border-radius: 20px;;        
+    }    
 } 
 </style>
