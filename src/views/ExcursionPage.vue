@@ -1,14 +1,19 @@
 <template>
-    <div class="about-page">
+    <div class="excursion-page">
         <div class="content">
-            <p>23 апреля в 14.00 состоится ИСТОРИЧЕСКАЯ ПРОГУЛКА-ЭКСКУРСИЯ с группой ЛАйК
-            "Классический Ульяновск – расширенная версия"</p>
+            <p>23 апреля состоялась прогулка по главным достопримечательностям города с группой ЛАйК</p>
 
-            <p>- Прогулка по главным, "открыточным" достопримечательностям города.</p>
+            <app-slider 
+                :data="$store.getters.excursions"
+                :isAutoSlider="false"
+                :sliding="sliding"
+                @updateTrigger="updateTrigger"
+                class="slider"
+            />
 
             <p>Почти 1,5 часовая пешеходная прогулка по центру Ульяновска. Наш путь пройдет по следующему маршруту: от площади 30-летия Победы, через Владимирский сад и Венец к достопримечательностям, которые связаны с фамилиями знаменитых симбирян - Ленина, Карамзина и Гончарова. По пути мы неоднократно насладимся величием Волги на нескольких видовых площадках, вспомним Разина и Пугачева, пройдем через ключевые моменты истории России, связанные с городом Ульяновском (Симбирском).</p>
 
-            <ul>
+            <ul class="point-list">
                 <li>Памятники войны.</li>
                 <li>Владимирский сад и Соборная Площадь.</li>
                 <li>Венец и Дом памятник Гончарову.</li>
@@ -22,14 +27,26 @@
 </template>
 
 <script>
-export default {
+import AppSlider from '@/components/app/AppSlider.vue'
+import swiperMixin from '@/mixins/swiper.mixin.js'
 
+export default {
+    name: 'ExcursionPage',
+    mixins: [swiperMixin],
+    components: {
+        AppSlider
+    },
+    data() {
+        return {
+            sliderNumber: 0 // номер слайдера на странице начиная с 0.
+        }
+    } 
 }
 </script>
 
 <style lang="scss" scoped>
 
-.about-page {
+.excursion-page {
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);
@@ -65,7 +82,16 @@ export default {
         height: calc(100vh - 128px);
     }     
 }
-ul {
+.point-list {
+    li {
+        list-style-type: '- '; 
+    }  
     margin-bottom: 16px;
+}
+.slider-wrap {
+    //padding: 0 64px;
+}
+.slider {
+    //margin: 0 auto;
 }
 </style>

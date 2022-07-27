@@ -38,7 +38,7 @@ export default {
     align-content: center;
     justify-content: space-between;
     color: rgb(255, 225, 92);
-    line-height: 64px;
+    line-height: 48px;
     padding: 0 64px;  
     @media (min-width: $tablet-min) and (max-width: $tablet-max) {
         padding: 0 32px;
