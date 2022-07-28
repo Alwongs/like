@@ -1,24 +1,26 @@
 <template>
     <div class="excursion-page">
         <div class="content">
-            <p>23 апреля состоялась прогулка по главным достопримечательностям города с группой ЛАйК</p>
+            <p>Прогулка по главным достопримечательностям города с группой ЛАйК</p>
 
-            <app-slider 
-                :data="$store.getters.excursions"
-                :isAutoSlider="false"
-                :sliding="sliding"
-                @updateTrigger="updateTrigger"
-                class="slider"
-            />
+            <div class="slider-wrap">
+                <app-slider 
+                    :data="$store.getters.excursions"
+                    :isAutoSlider="false"
+                    :sliding="sliding"
+                    @updateTrigger="updateTrigger"
+                    class="slider"
+                />
+            </div>
 
             <p>Почти 1,5 часовая пешеходная прогулка по центру Ульяновска. Наш путь пройдет по следующему маршруту: от площади 30-летия Победы, через Владимирский сад и Венец к достопримечательностям, которые связаны с фамилиями знаменитых симбирян - Ленина, Карамзина и Гончарова. По пути мы неоднократно насладимся величием Волги на нескольких видовых площадках, вспомним Разина и Пугачева, пройдем через ключевые моменты истории России, связанные с городом Ульяновском (Симбирском).</p>
 
             <ul class="point-list">
-                <li>Памятники войны.</li>
-                <li>Владимирский сад и Соборная Площадь.</li>
-                <li>Венец и Дом памятник Гончарову.</li>
-                <li>Памятник Н. М. Карамзину и Симбирская классическая гимназия</li>
-                <li>Сквер Гончарова и рассказ о Емельяне Пугачеве</li>
+                <li>- Памятники войны.</li>
+                <li>- Владимирский сад и Соборная Площадь.</li>
+                <li>- Венец и Дом памятник Гончарову.</li>
+                <li>- Памятник Н. М. Карамзину и Симбирская классическая гимназия</li>
+                <li>- Сквер Гончарова и рассказ о Емельяне Пугачеве</li>
             </ul>
 
             <p>Завершим экскурсию пройдя мимо дома, в подвале которого в 1774 году пытали и содержали под стражей Пугачева. Вы прогуляетесь по улице Ленина, сохранившей практически неизменный вид с начала XX века. На прощание узнаете удивительную историю возникновения сквера на месте Спасо-Вознесенского собора и найдете следы этого религиозного сооружения в окружающем пространстве поняв, как Ульяновск связан с Лондоном.</p>
@@ -64,10 +66,6 @@ export default {
         border-radius: 0;
     } 
 }
-.divider {
-    color: #fff;
-    margin: 16px;    
-}
 .content {
     height: calc(100vh - 128px - 64px);
     overflow-x: hidden;
@@ -83,15 +81,27 @@ export default {
     }     
 }
 .point-list {
-    li {
-        list-style-type: '- '; 
-    }  
     margin-bottom: 16px;
+   
 }
 .slider-wrap {
-    //padding: 0 64px;
+    height: 465px;
+    margin-bottom: 16px;
+    @media (max-width: $mobile-max) {
+    height: 380px;
+    }      
 }
 .slider {
-    //margin: 0 auto;
+    width: 700px;
+    margin: 0 auto;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        width: 700px;
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        width: 600px;
+    }      
+    @media (max-width: $mobile-max) {
+        width: 100%;;
+    }     
 }
 </style>
