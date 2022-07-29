@@ -6,6 +6,12 @@ export default {
         tracking(state) {
             return state.tracking;
         },
+        crimea(state) {
+            return state.crimea;
+        },
+        ural(state) {
+            return state.ural;
+        },
     },
     state: {
         excursions: [
@@ -21,6 +27,18 @@ export default {
             { id: 3, img: 'tracking/gallery_3.jpg' },
             { id: 4, img: 'tracking/gallery_4.jpg' },          
             { id: 5, img: 'tracking/gallery_5.jpg' },          
+        ],
+        crimea: [
+            { id: 1, img: 'crimea/gallery_1.jpg' },
+            { id: 2, img: 'crimea/gallery_2.jpg' },
+            { id: 3, img: 'crimea/gallery_3.jpg' },
+            { id: 4, img: 'crimea/gallery_4.jpg' },          
+        ],
+        ural: [
+            { id: 1, img: 'ural/gallery_1.jpg' },
+            { id: 2, img: 'ural/gallery_2.jpg' },
+            { id: 3, img: 'ural/gallery_3.jpg' },
+            { id: 4, img: 'ural/gallery_4.jpg' },          
         ],
     }
 }
