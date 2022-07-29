@@ -1,5 +1,5 @@
 <template>
-    <ul class="service-list">
+    <ul class="service-list border">
         <li class="service-item">
             <router-link class="service-link" to="/excursion-page">
                 <img 
@@ -94,12 +94,20 @@ export default {
     } 
 }
 .icon {
-    width: 90px;
-    height: 90px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     border: 2px solid white;
     margin: 0 auto;
     margin-bottom: 6px;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        width: 90px;
+        height: 90px;
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        width: 90px;
+        height: 90px;  
+    }     
     @media (max-width: $mobile-max) {
         width: 100%;
         height: auto;

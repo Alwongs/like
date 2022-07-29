@@ -12,6 +12,9 @@ export default {
         ural(state) {
             return state.ural;
         },
+        photosession(state) {
+            return state.photosession;
+        },
     },
     state: {
         excursions: [
@@ -39,6 +42,14 @@ export default {
             { id: 2, img: 'ural/gallery_2.jpg' },
             { id: 3, img: 'ural/gallery_3.jpg' },
             { id: 4, img: 'ural/gallery_4.jpg' },          
+        ],
+        photosession: [
+            { id: 1, img: 'photosession/gallery_1.jpg' },
+            { id: 2, img: 'photosession/gallery_2.jpg' },
+            { id: 3, img: 'photosession/gallery_3.jpg' },
+            { id: 4, img: 'photosession/gallery_4.jpg' },          
+            { id: 5, img: 'photosession/gallery_5.jpg' },          
+            { id: 6, img: 'photosession/gallery_6.jpg' },          
         ],
     }
 }
