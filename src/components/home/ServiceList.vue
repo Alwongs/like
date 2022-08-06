@@ -1,11 +1,11 @@
 <template>
-    <ul class="service-list border">
+    <ul class="service-list">
         <li class="service-item">
             <router-link class="service-link" to="/excursion-page">
                 <img 
                     class="icon" 
                     :src="require('@/assets/img/jpg/home/excursions.jpg')" 
-                    alt=""
+                    alt="icon"
                 >
                 <p>Экскурсии</p>
             </router-link>            
@@ -15,7 +15,7 @@
                 <img 
                     class="icon" 
                     :src="require('@/assets/img/jpg/home/tracking.jpg')" 
-                    alt=""
+                    alt="icon"
                 >
                 <p>Походы</p>
             </router-link>              
@@ -25,7 +25,7 @@
                 <img 
                     class="icon" 
                     :src="require('@/assets/img/jpg/home/crimea.jpg')" 
-                    alt=""
+                    alt="icon"
                 >
                 <p>Крым</p>
             </router-link>              
@@ -35,7 +35,7 @@
                 <img 
                     class="icon" 
                     :src="require('@/assets/img/jpg/home/ural.jpg')" 
-                    alt=""
+                    alt="icon"
                 >
                 <p>Урал</p>
             </router-link>             
@@ -45,7 +45,7 @@
                 <img 
                     class="icon" 
                     :src="require('@/assets/img/jpg/home/photosession.jpg')" 
-                    alt=""
+                    alt="icon"
                 >
                 <p>Фотосессии</p>
             </router-link>              
