@@ -1,10 +1,16 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Store from '../store'
 
 const routes = [
     {
         path: '/',
         name: 'home',
         component: () => import('@/views/HomePage.vue')
+    },
+    {
+        path: '/post-list-page',
+        name: 'post-list-page',
+        component: () => import('@/views/PostListPage.vue')
     },
     {
         path: '/about-page',
@@ -36,11 +42,42 @@ const routes = [
         name: 'photosession-page',
         component: () => import('@/views/PhotosessionPage.vue')
     },
+    {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('@/views/ProfilePage.vue'),
+        meta: { authRequired: true }
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import('@/views/LoginPage.vue'),
+      },
+      {
+        path: '/register',
+        name: 'register',
+        component: () => import('@/views/RegisterPage.vue'),
+      },       
 ]
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes
+});
+
+router.beforeEach((to, from, next) => {
+    Store.dispatch('initAuth')
+    .then(user => {
+        if(to.matched.some(route => route.meta.authRequired)) {
+            if(user) {
+                next();
+            } else {
+                next('/signin');
+            }
+        } else {
+            next();
+        }
+    })
 })
 
 export default router

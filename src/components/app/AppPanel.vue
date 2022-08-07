@@ -11,10 +11,29 @@
                     О нас
                 </router-link>
             </li>
-            <li class="nav-item last-item">
+            <li
+                class="nav-item"
+                :class="{'last-item': !isUserAuthenticated}"
+            >
                 <router-link :to="'#'">
                     Галерея
                 </router-link>       
+            </li>
+            <li 
+                v-if="isUserAuthenticated" 
+                class="nav-item"
+            >
+                <router-link :to="'profile'">
+                    Админ
+                </router-link>       
+            </li>
+            <li 
+                v-if="isUserAuthenticated" 
+                class="nav-item"
+            >
+                <button @click="logout">
+                    Выйти
+                </button>       
             </li>
         </ul>
     </header>
@@ -23,10 +42,47 @@
 <script>
 export default {
     name: 'AppPanel',
-    methods: {
-        goTo(routeName) {
-            this.$router.push({name: routeName});
+    computed: {
+        isUserAuthenticated() {
+            return this.$store.getters.isUserAuthenticated;
+        },         
+        menuItems() {
+            return this.isUserAuthenticated
+                ? [
+                {
+                    title: 'О нас',
+                    route: '/about-page',
+                },
+                {
+                    title: 'Мой кабинет',
+                    route: '/profile',
+                },
+                {
+                    title: 'Выйти',
+                    route: '/logout',
+                },
+            ] :
+            [
+                {
+                    title: 'Читать',
+                    route: '/books',
+                },
+                {
+                    title: 'Войти',
+                    route: '/signin',
+                },
+                {
+                    title: 'Зарегистрироваться',
+                    route: '/signup',
+                },
+            ]            
         }
+    },    
+    methods: {
+        logout() {
+            this.$store.dispatch('signOut');
+            this.$router.push('/');
+        }        
     }
 }
 </script>
