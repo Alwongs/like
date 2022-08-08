@@ -1,4 +1,4 @@
-import { getDatabase, set, ref, child, get, remove } from "firebase/database";
+import { getDatabase, set, ref, child, get, update, remove } from "firebase/database";
 import sortList from '../../funcs/sort.js'
 
 export default {
@@ -57,6 +57,20 @@ export default {
             }).catch((error) => {
                 console.error(error);
             });
-        },        
+        },   
+        
+        async updatePost({commit}, post) {
+            try {              
+                const db = getDatabase();
+         
+                const updates = {};
+                updates[`posts/${post.id}`] = post;
+
+                return await update(ref(db), updates);
+            } catch (e) {
+                commit('SET_ERROR', e)
+                throw e                
+            }                
+        }         
     }
 }

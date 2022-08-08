@@ -31,9 +31,9 @@
                 v-if="isUserAuthenticated" 
                 class="nav-item"
             >
-                <button @click="logout">
+                <div class="btn-logout" @click="logout">
                     Выйти
-                </button>       
+                </div>       
             </li>
         </ul>
     </header>
@@ -110,6 +110,7 @@ export default {
 }
 .nav-item {
     margin-right: 16px;
+    cursor: pointer;
     &.last-item {
         margin-right: 0;        
     }

@@ -2,14 +2,19 @@
     <li class="post-item">
         <header class="post-header">
             <div class="left">{{ post.postType }}</div>
-            <div class="right">{{ post.id }}</div>
+            <div class="right">{{ getDate(post.id) }}</div>
         </header>
         <main class="post-body">
             <h3 class="title">{{ post.title }}</h3>
             <p class="body">{{ post.text }}</p>
         </main>
         <footer class="post-footer">
-            <button class="btn btn__blue">Редактировать</button>
+            <button 
+                class="btn btn__blue"
+                @click="openForm(post)"
+            >
+                Редактировать
+            </button>
             <button 
                 class="btn btn__red" 
                 @click="deletePost"
@@ -21,13 +26,22 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
     name: 'PostItem',
     props: ['post'],
     methods: {
         deletePost() {
             this.$store.dispatch('removePost', this.post.id)
-        }
+        },
+        openForm() {
+            this.$emit('openForm', this.post)
+        },
+        getDate(time) {
+            moment.locale('ru');
+            return moment.unix(time/1000).format('DD.MM.YYYY, HH:mm')
+        }       
     }
 }
 </script>

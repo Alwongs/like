@@ -1,40 +1,43 @@
 <template>
     <div class="background-wrapper">
         <form class="form">
-            <h2 class="form-title">Создание нового поста</h2>
+            <p v-if="loading" class="loading">Обновление поста...</p>
+
+            <h2 class="form-title">Редактирование</h2>
             <div class="form-item">
                 <input 
-                    v-model="data.postType" 
+                    v-model="post.postType" 
                     class="title" 
                     placeholder="тип поста.. (анонс, отчёт..)"
                 >
             </div>
             <div class="form-item">
                 <input 
-                    v-model="data.eventType" 
+                    v-model="post.eventType" 
                     class="title" 
                     placeholder="тип события.. (экскурсия, поход, фотосессия..)"
                 >
             </div>
             <div class="form-item">
                 <input 
-                    v-model="data.title" 
+                    v-model="post.title" 
                     class="title" 
                     placeholder="Название поста"
                 >
             </div>
             <div class="form-item">
                 <textarea 
-                    v-model="data.text" 
+                    v-model="post.text" 
                     type="text" 
                     class="text" 
                     placeholder="Введите текст.." 
-
+                    cols="30" 
+                    rows="10"
                 ></textarea>
             </div>
             <div class="btn-block">
                 <button class="btn" @click.prevent="closeForm">Закрыть</button>
-                <button class="btn btn__green" @click.prevent="savePost">Сохранить</button>
+                <button class="btn btn__green" @click.prevent="updatePost">Сохранить</button>
             </div>
         </form>
     </div>
@@ -43,30 +46,34 @@
 <script>
 export default {
     name: 'CreateEventForm',
+    props: ['postForEdit'],
     data() {
         return {
-            data: {
-                postType: '',
-                eventType: '',
-                title: '',
-                text: '',
-            }
+            post: {}
         }
     },
     computed: {
+        loading() {
+            return this.$store.getters.getProcessing
+        },
         userId() {
             return this.$store.getters.userId;
         }
     },
     methods: {
-        async savePost() {
-            await this.$store.dispatch('savePost', this.data);
+        async updatePost() {
+            this.$store.commit('SET_PROCESSING', true);
+            await this.$store.dispatch('updatePost', this.post);
+            this.$store.commit('SET_PROCESSING', false);            
             this.$emit('closeForm')
         },
         closeForm() {
             this.$emit('closeForm')
         }
-    } ,    
+    }, 
+    mounted() {
+        this.post = this.postForEdit;
+    }
 }
 </script>
 
@@ -81,7 +88,8 @@ export default {
     top: 0;
 }
 .form {
-    width: 900px;  
+    width: 600px;
+    height: 550px;   
     position: absolute;
     left: 50%;
     top: 50%; 
@@ -91,16 +99,13 @@ export default {
     border-radius: 10px;
     padding: 16px;
     margin-bottom: 32px;
-    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
-        width: 800px;  
-    }     
-    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
-        width: 700px;
-    }     
     @media (max-width: $mobile-max) {
         width: 100%;
         border-radius: 0; 
     }     
+}
+.loading {
+    color: white;
 }
 .form-title {
     color: white;
@@ -114,7 +119,6 @@ export default {
 }
 textarea {
     width: 100%;
-    height: 300px;
     margin-bottom: 16px;
     padding: 8px;
 }

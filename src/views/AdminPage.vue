@@ -8,17 +8,23 @@
 
         <main class="profile-main">
             <button 
-                v-if="!isFormOpen" 
+                v-if="!isCreateFormOpen" 
                 class="btn-opener"
-                @click="openForm"
+                @click="openCreateForm"
             >
                 + Добавить пост
             </button> 
 
             <create-event-form 
-                v-if="isFormOpen" 
+                v-if="isCreateFormOpen" 
                 class="form-block"
-                @closeForm="closeForm" 
+                @closeForm="closeCreateForm" 
+            />
+            <edit-event-form 
+                v-if="isEditFormOpen"
+                :postForEdit="post"
+                class="form-block"
+                @closeForm="closeEditForm" 
             />
 
             <h2>Посты:</h2>
@@ -28,6 +34,7 @@
                     :key="post.id"
                     :post="post"
                     class="post-item-block"
+                    @openForm="openEditForm"
                 />
             </ul>
             <p v-else>Список пуст..</p>
@@ -37,18 +44,21 @@
 
 <script>
 import CreateEventForm from '@/components/admin/CreateEventForm.vue'
+import EditEventForm from '@/components/admin/EditEventForm.vue'
 import PostItem from '@/components/admin/PostItem.vue';
 
 export default {
     name: 'AdminPage',
     components: { 
         CreateEventForm,
-        PostItem 
+        EditEventForm,
+        PostItem
     },
     data() {
         return {
-            isFormOpen: false,
-            data: {}
+            isCreateFormOpen: false,
+            isEditFormOpen: false,
+            post: {}
         }
     },
     computed: {
@@ -60,12 +70,20 @@ export default {
         }
     },
     methods: {
-        openForm() {
-            this.isFormOpen = true;
+        openCreateForm() {
+            this.isCreateFormOpen = true;
         },
-        closeForm() {
-            this.isFormOpen = false;            
-        }
+        closeCreateForm() {
+            this.isCreateFormOpen = false;            
+        },
+
+        openEditForm(post) {
+            this.post = post
+            this.isEditFormOpen = true;
+        },
+        closeEditForm() {
+            this.isEditFormOpen = false;            
+        },
     } ,
     async mounted() {
         await this.$store.dispatch('getPostList')
