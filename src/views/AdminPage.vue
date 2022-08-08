@@ -5,6 +5,7 @@
             <p>user-id: {{ userId }}</p>
             <hr>
         </header>
+
         <main class="profile-main">
             <button 
                 v-if="!isFormOpen" 
@@ -12,9 +13,11 @@
                 @click="openForm"
             >
                 + Добавить пост
-            </button>            
+            </button> 
+
             <create-event-form 
                 v-if="isFormOpen" 
+                class="form-block"
                 @closeForm="closeForm" 
             />
 
@@ -37,7 +40,7 @@ import CreateEventForm from '@/components/admin/CreateEventForm.vue'
 import PostItem from '@/components/admin/PostItem.vue';
 
 export default {
-    name: 'ProfilePage',
+    name: 'AdminPage',
     components: { 
         CreateEventForm,
         PostItem 
@@ -78,7 +81,9 @@ export default {
     width: 100%;
     height: 100%;
     padding: 64px;
-
+    @media (max-width: $mobile-max) {
+        padding: 16px;
+    } 
 }
 .profile-header {
     margin-bottom: 32px;
@@ -89,7 +94,7 @@ export default {
     margin-bottom: 16px;
 }
 .post-list {
-    padding-left: 32px;
+
 }
 .post-item-block {
     margin-bottom: 48px;
