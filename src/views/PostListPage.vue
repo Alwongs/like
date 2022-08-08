@@ -3,31 +3,22 @@
         <div class="content">
             <p v-if="loading" class="loading">Загрузка...</p>
             <ul 
-                v-if="limitedPostList" 
+                v-if="postList" 
                 class="post-list"
             >
                 <post-item 
-                    v-for="post in limitedPostList" 
+                    v-for="post in postList" 
                     :key="post.id"
                     :post="post"
                     class="post-item-block"
                 />
-                <li>
-                    <a 
-                        v-if="postList.length > 3"
-                        href="" 
-                        class="look-more-link"
-                    >
-                        Посмотреть ещё
-                    </a>
-                </li>
             </ul>            
         </div>
     </div>
 </template>
 
 <script>
-import PostItem from '@/components/home/PostItem.vue'
+import PostItem from '@/components/posts/PostItem.vue'
 
 export default {
     name: 'PostListPage',
@@ -44,9 +35,6 @@ export default {
         postList() {
             return this.$store.getters.postList;
         },
-        limitedPostList() {
-            return this.$store.getters.limitedPostList;
-        }
     },
     async mounted() {
         await this.$store.dispatch('getPostList')
@@ -64,7 +52,7 @@ export default {
     height: 100%;
     padding: 64px;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
-        padding: 16px;
+        padding: 32px;
     }     
     @media (min-width: $tablet-min) and (max-width: $tablet-max) {
         padding: 16px;
@@ -87,11 +75,10 @@ export default {
     @media (max-width: $mobile-max) {
         height: calc(100vh - 128px);
     } 
-      overflow: auto;
-      -ms-overflow-style: none;
-      scrollbar-width: none;        
+    overflow: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;        
 }
-
 .content::-webkit-scrollbar {
       width: 0;
       height: 0;
@@ -100,7 +87,6 @@ export default {
 
 .post-item-block {
     margin-bottom: 48px;
-    border-radius: 15px;
 }
 .look-more-link {
     color: white;

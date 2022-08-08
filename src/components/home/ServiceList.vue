@@ -69,12 +69,15 @@ export default {
         padding: 32px;
     } 
 }
-.service-item {
+.service-item {   
     text-align: center;
     width: 120px;    
     cursor: pointer; 
+    img {
+        box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);        
+    }
     @media (max-width: $mobile-max) {
-        width: 30%;
+        width: 100%;
         margin-bottom: 16px;
     }      
 }

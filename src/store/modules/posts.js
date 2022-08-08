@@ -45,9 +45,7 @@ export default {
             get(child(dbRef, `posts`)).then((data) => {
 
                 if (data.exists()) {
-                    console.log('here')
-                    const posts = data.val()  
-                    console.log(posts)                  
+                    const posts = data.val()                 
                     const postArray = Object.keys(posts).map(key => ({...posts[key], id: key}));
                     const sortedPostList = sortList(postArray)                    
                     commit('UPDATE_POSTS', sortedPostList);

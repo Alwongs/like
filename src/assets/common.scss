@@ -13,8 +13,12 @@ html, body {
     height: 100vh;
     font-size: 20px;
     @media (max-width: $mobile-max) {
+        background-image: none;
+        background-color: rgb(43, 135, 239);
+        /*
         background-image: url('~@/assets/img/jpg/bg_image_mobile_2.jpg');
-        background-size: cover;        
+        background-size: cover; 
+        */       
         font-size: 12px;
     }      
 }

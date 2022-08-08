@@ -90,6 +90,7 @@ export default {
 <style lang="scss" scoped>
 
 .app-header {
+
     display: flex;
     align-content: center;
     justify-content: space-between;

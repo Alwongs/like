@@ -1,12 +1,24 @@
 <template>
     <li class="post-item">
         <header class="post-header">
-            <div class="left"><h3>{{ post.title }}</h3></div>
-            <div class="right">{{ getDate(post.id) }}</div>
+            <div 
+                class="left"
+                :class="{ red: post.eventType === 'Анонс' }"
+            >
+                {{ post.eventType }}
+            </div>
+
+            <div class="right">
+                {{ getDate(post.id) }}
+            </div>
         </header>
         <main class="post-body">
-            <p class="body">{{ post.text }}</p>
+            <h3 class="title">{{ post.title }}</h3>
+            <p>{{ post.text }}</p>
         </main>
+        <footer class="post-footer">
+
+        </footer>
     </li>
 </template>
 
@@ -32,52 +44,37 @@ export default {
 .post-item {
     background-color: rgba(255, 255, 255, 0.7);
     padding: 5px 15px;
+    border-bottom: 1px solid lightgrey;
     color: rgb(76, 76, 82);
-    cursor: pointer;
-    &:hover {
-        background-color: rgb(228, 228, 209);      
-    }    
 }
+
 .post-header {
     display: flex;
     justify-content: space-between;
-    min-height: 30px;
-    .right {
-        font-size: 12px;
-    }
-}
-.post-body { 
-    height: 60px;
-    overflow: hidden;
-    p {
-        font-style: italic;
-    }  
-}
-.title {
-    font-size: 18px;    
-    text-align: center;
-    margin-bottom: 8px;
-}
-.body {
+    padding: 5px;
     font-size: 14px;
 }
+.left {
+    &.red {
+        color: red;
+    }
+} 
+.post-body { 
+    h3 {
+        font-size: 18px;    
+        text-align: center;
+        margin-bottom: 8px;
+    }    
+    p {
+        font-style: italic;
+        font-size: 14px;        
+    }  
+}
+
 .post-footer {
     display: flex;
     justify-content: space-between; 
     padding: 8px;   
-}
-.btn {
-    padding: 5px 10px;
-    cursor: pointer;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    &__blue {
-        background-color: blue;
-    }
-    &__red {
-        background-color: red;        
-    }
 }
 
 </style>

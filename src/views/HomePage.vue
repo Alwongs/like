@@ -31,5 +31,13 @@ export default {
     height: 100%;  
     color: white; 
 }
+.service-list-block {
+    height: 100%;
+}
 
+.post-list-block {
+    @media (max-width: $mobile-max) {
+        display: none;
+    }     
+}
 </style>
