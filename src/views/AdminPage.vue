@@ -94,6 +94,7 @@ export default {
 <style lang="scss" scoped>
 
 .profile-page {
+    position: relative;
     background-color: #fff;
     border-radius: 10px;
     width: 100%;

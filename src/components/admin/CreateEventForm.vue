@@ -82,7 +82,7 @@ export default {
 }
 .form {
     width: 900px;  
-    position: absolute;
+    position: fixed;
     left: 50%;
     top: 50%; 
     transform: translate(-50%, -50%);      
