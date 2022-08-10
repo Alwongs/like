@@ -15,8 +15,8 @@
                 class="nav-item"
                 :class="{'last-item': !isUserAuthenticated}"
             >
-                <router-link :to="'#'">
-                    Галерея
+                <router-link :to="'post-list-page'">
+                    События
                 </router-link>       
             </li>
             <li 

@@ -1,7 +1,11 @@
 <template>
     <li class="post-item">
         <header class="post-header">
-            <div class="left">{{ post.postType }}</div>
+            <div 
+                class="left"
+                :class="{ red: post.postType === 'Анонс' }"                
+            >
+                {{ post.postType }}</div>
             <div class="right">{{ getDate(post.id) }}</div>
         </header>
         <main class="post-body">
@@ -58,6 +62,12 @@ export default {
     padding: 5px;
     font-size: 14px;
 }
+.left {
+    &.red {
+        color: red;
+    }    
+}
+
 .post-body {   
 }
 .title {

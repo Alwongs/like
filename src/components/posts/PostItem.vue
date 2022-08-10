@@ -3,7 +3,6 @@
         <header class="post-header">
             <div 
                 class="left"
-                :class="{ red: post.eventType === 'Анонс' }"
             >
                 {{ post.eventType }}
             </div>
