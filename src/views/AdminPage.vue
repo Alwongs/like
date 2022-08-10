@@ -108,9 +108,18 @@ export default {
     margin-bottom: 32px;
 }
 .btn-opener {
-    padding: 5px 10px;
+    font-size: 16px;
+    padding: 10px 20px;
     cursor: pointer;
     margin-bottom: 16px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    border: none;
+    @media (max-width: $mobile-max) {
+        padding: 15px 0;        
+        font-size: 22px;
+        width: 100%;       
+    }     
 }
 .post-list {
 

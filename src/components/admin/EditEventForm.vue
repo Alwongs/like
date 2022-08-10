@@ -4,19 +4,34 @@
             <p v-if="loading" class="loading">Обновление поста...</p>
 
             <h2 class="form-title">Редактирование</h2>
-            <div class="form-item">
+            <div class="form-item select-type-input">
                 <input 
                     v-model="post.postType" 
                     class="title" 
                     placeholder="тип поста.. (анонс, отчёт..)"
+                    readonly
+                    @click="openPostTypeBlock"                       
                 >
+                <ul v-if="isPostTypeOpen" class="select-type-block">
+                    <li @click="selectPostType('announce')">Анонс</li>
+                    <li @click="selectPostType('post')">Отчёт</li>
+                </ul>                
             </div>
-            <div class="form-item">
+            <div class="form-item select-type-input">
                 <input 
                     v-model="post.eventType" 
                     class="title" 
                     placeholder="тип события.. (экскурсия, поход, фотосессия..)"
+                    readonly
+                    @click="openEventTypeBlock"  
                 >
+                <ul v-if="isEventTypeOpen" class="select-type-block">
+                    <li @click="selectEventType('tracking')">Поход</li>
+                    <li @click="selectEventType('excursion')">Экскурсия</li>
+                    <li @click="selectEventType('photosession')">Фотосессия</li>
+                    <li @click="selectEventType('ural')">Поездка Урал</li>
+                    <li @click="selectEventType('crimea')">Поездка в Крым</li>
+                </ul>                 
             </div>
             <div class="form-item">
                 <input 
@@ -49,7 +64,9 @@ export default {
     props: ['postForEdit'],
     data() {
         return {
-            post: {}
+            post: {},
+            isPostTypeOpen: false,
+            isEventTypeOpen: false,            
         }
     },
     computed: {
@@ -61,6 +78,40 @@ export default {
         }
     },
     methods: {
+        selectPostType(option) {
+            this.post.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
+            this.isPostTypeOpen = false;
+        },
+        selectEventType(option) {
+            switch (option) {
+            case 'tracking':
+                this.post.eventType = 'Поход';
+                break;
+            case 'excursion':
+                this.post.eventType = 'Экскурсия';
+                break;
+            case 'photosession':
+                this.post.eventType = 'Фотосессия';
+                break;
+            case 'ural':
+                this.post.eventType = 'Поездка Урал';
+                break;
+            case 'crimea':
+                this.post.eventType = 'Поездка в Крым';
+                break;
+            default:
+                alert('');
+            }
+            this.isEventTypeOpen = false;            
+        },
+        openPostTypeBlock() {
+            this.isPostTypeOpen = !this.isPostTypeOpen
+            this.isEventTypeOpen = false            
+        },
+        openEventTypeBlock() {
+            this.isEventTypeOpen = !this.isEventTypeOpen
+            this.isPostTypeOpen = false              
+        },        
         async updatePost() {
             this.$store.commit('SET_PROCESSING', true);
             await this.$store.dispatch('updatePost', this.post);
@@ -88,8 +139,7 @@ export default {
     top: 0;
 }
 .form {
-    width: 600px;
-    height: 550px;   
+    width: 900px;  
     position: fixed;
     left: 50%;
     top: 50%; 
@@ -99,45 +149,100 @@ export default {
     border-radius: 10px;
     padding: 16px;
     margin-bottom: 32px;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        width: 800px;  
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        width: 700px;
+    }     
     @media (max-width: $mobile-max) {
         width: 100%;
+        height: 100%;
         border-radius: 0; 
     }     
 }
-.loading {
-    color: white;
-}
 .form-title {
+    font-size: 24px;
     color: white;
 }
 .form-item > input {
+    font-size: 14px;     
     width: 100%;
     height: 40px;
     margin-bottom: 16px;
     border-radius: 5px;
     padding-left: 8px;
+    outline: none;
+    @media (max-width: $mobile-max) {
+        font-size: 22px;        
+        min-height: 50px;
+    }     
+}
+.select-type-input {
+    position: relative;
+}
+.select-type-block {
+    z-index: 1;
+    font-size: 22px;      
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #fff;
+    width: 100%;
+    border-radius: 5px 5px 10px 10px;
+    padding: 10px 0;
+    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.332);
+    li {
+        vertical-align: center;
+        padding-left: 20px;
+        height: 40px;
+        line-height: 40px;
+        cursor: pointer;
+    }
+    li:hover {
+        background-color: rgb(222, 222, 222);
+    }
 }
 textarea {
+    font-size: 14px;     
     width: 100%;
+    height: 300px;
     margin-bottom: 16px;
+    border-radius: 5px; 
+    outline: none;       
     padding: 8px;
+    @media (max-width: $mobile-max) {
+        font-size: 22px;          
+        min-height: 100%;
+    }     
 }
 .btn-block {
     display: flex;
     justify-content: space-between;
+    @media (max-width: $mobile-max) {
+        flex-direction: column;
+    }      
 }
 .btn {
+    font-size: 18px;
+    font-weight: 400;
+    color: rgb(57, 57, 57);
     padding: 7px 15px;
     border: none;
     border-radius: 5px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);  
-            border: 1px solid grey; 
+    border: 1px solid grey; 
     cursor: pointer; 
     &__green {
         background-color: rgb(56, 146, 68);
         border: 1px solid white;
         color: white;
     }
+    @media (max-width: $mobile-max) {
+        font-size: 22px;
+        padding: 14px 15px;
+        margin-bottom: 16px;
+    }     
 }
 
 </style>

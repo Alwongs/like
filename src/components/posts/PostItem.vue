@@ -16,7 +16,18 @@
             <p>{{ post.text }}</p>
         </main>
         <footer class="post-footer">
-
+            <button 
+                class="btn btn__blue"
+                @click="think"
+            >
+                Резерв
+            </button>
+            <button 
+                class="btn btn__red" 
+                @click="book"
+            >
+                Забронировать
+            </button>
         </footer>
     </li>
 </template>
@@ -28,6 +39,12 @@ export default {
     name: 'PostItem',
     props: ['post'],
     methods: {
+        book() {
+            alert('Еще не готово! ))')
+        },
+        think() {
+            alert('Тут подумть надо :/')
+        },
         deletePost() {
             this.$store.dispatch('removePost', this.post.id)
         },
@@ -45,6 +62,9 @@ export default {
     padding: 5px 15px;
     border-bottom: 1px solid lightgrey;
     color: rgb(76, 76, 82);
+    @media (max-width: $mobile-max) {
+        padding: 5px 0;
+    }     
 }
 
 .post-header {
@@ -60,13 +80,13 @@ export default {
 } 
 .post-body { 
     h3 {
-        font-size: 18px;    
+        font-size: 20px;    
         text-align: center;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
     }    
     p {
-        font-style: italic;
-        font-size: 14px;        
+        font-size: 18px;   
+        line-height: 26px;     
     }  
 }
 
@@ -75,5 +95,19 @@ export default {
     justify-content: space-between; 
     padding: 8px;   
 }
-
+.btn {
+    font-size: 18px;
+    padding: 8px 16px;
+    cursor: pointer;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.513);
+    &__blue {
+        background-color: rgb(59, 85, 214);
+    }
+    &__red {
+        background-color: rgb(8, 130, 30);        
+    }
+}
 </style>

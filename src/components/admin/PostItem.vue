@@ -37,7 +37,9 @@ export default {
     props: ['post'],
     methods: {
         deletePost() {
-            this.$store.dispatch('removePost', this.post.id)
+            if (confirm('Лена, ты хочешь удалить этот пост?   (°□°) ')) {
+                this.$store.dispatch('removePost', this.post.id)
+            }
         },
         openForm() {
             this.$emit('openForm', this.post)
@@ -52,8 +54,10 @@ export default {
 
 <style lang="scss" scoped>
 .post-item {
-    background-color: rgb(219, 236, 217);
-    padding: 0 5px;
+    font-size: 18px;
+
+    background-color: rgb(230, 237, 230);
+    padding: 5px 15px;
     border-bottom: 1px solid lightgrey;
 }
 .post-header {
@@ -71,12 +75,12 @@ export default {
 .post-body {   
 }
 .title {
-    font-size: 18px;    
+    font-size: 20px;    
     text-align: center;
     margin-bottom: 8px;
 }
 .body {
-    font-size: 14px;
+    line-height: 26px;
 }
 .post-footer {
     display: flex;
@@ -84,16 +88,18 @@ export default {
     padding: 8px;   
 }
 .btn {
-    padding: 5px 10px;
+    font-size: 18px;
+    padding: 8px 16px;
     cursor: pointer;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.513);
     &__blue {
-        background-color: blue;
+        background-color: rgb(59, 85, 214);
     }
     &__red {
-        background-color: red;        
+        background-color: rgb(213, 74, 74);        
     }
 }
 </style>
