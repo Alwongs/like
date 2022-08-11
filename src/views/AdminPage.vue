@@ -101,6 +101,7 @@ export default {
     height: 100%;
     padding: 64px;
     @media (max-width: $mobile-max) {
+        border-radius: 0;        
         padding: 16px;
     } 
 }

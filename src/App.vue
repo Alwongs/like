@@ -43,6 +43,6 @@ export default {
     } 
 }
 .flex-item {
-    flex: 0 0 48px;
+    flex: 0 0 64px;
 }
 </style>

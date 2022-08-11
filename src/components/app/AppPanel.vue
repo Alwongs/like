@@ -5,37 +5,27 @@
                 ЛАйК
             </router-link>                         
         </div>
-        <ul class="nav-block">
-            <li class="nav-item">
-                <router-link :to="'about-page'">
-                    О нас
-                </router-link>
-            </li>
-            <li
-                class="nav-item"
-                :class="{'last-item': !isUserAuthenticated}"
-            >
-                <router-link :to="'post-list-page'">
-                    События
-                </router-link>       
-            </li>
-            <li 
-                v-if="isUserAuthenticated" 
-                class="nav-item"
-            >
-                <router-link :to="'profile'">
-                    Админ
-                </router-link>       
-            </li>
-            <li 
-                v-if="isUserAuthenticated" 
-                class="nav-item"
-            >
-                <div class="btn-logout" @click="logout">
-                    Выйти
-                </div>       
-            </li>
-        </ul>
+        <nav class="nav-wrap" :class="{active: isMenuOpen}">
+            <ul class="nav-block">
+                <li 
+                    v-for="item in menuItems"
+                    :key="item.route"
+                    class="nav-item"
+                    @click="goTo(item.route)"                    
+                >
+                    <router-link 
+                        :to="item.route"
+                    >
+                        {{ item.title }}
+                    </router-link>
+                </li>
+            </ul>     
+        </nav>
+        <div 
+            class="menu-btn" 
+            :class="{opened: isMenuOpen}"
+            @click="toggleMenu"
+        ></div>
     </header>
 </template>
 
@@ -54,8 +44,12 @@ export default {
                     route: '/about-page',
                 },
                 {
-                    title: 'Мой кабинет',
-                    route: '/profile',
+                    title: 'События',
+                    route: '/post-list-page',
+                },
+                {
+                    title: 'Админка',
+                    route: '/helen-ruls',
                 },
                 {
                     title: 'Выйти',
@@ -64,21 +58,49 @@ export default {
             ] :
             [
                 {
-                    title: 'Читать',
-                    route: '/books',
+                    title: 'О нас',
+                    route: '/about-page',
+                },  
+                {
+                    title: 'События',
+                    route: '/post-list-page',
+                },                              
+                /*
+                {
+                    title: 'Вход',
+                    route: '/login',
                 },
                 {
-                    title: 'Войти',
-                    route: '/signin',
+                    title: 'Регистрация',
+                    route: '/register',
                 },
-                {
-                    title: 'Зарегистрироваться',
-                    route: '/signup',
-                },
+                */
             ]            
         }
     },    
+    data() {
+        return {
+            isMenuOpen: false
+        }
+    },
     methods: {
+        goTo(path) {
+            if (path === '/logout') {
+                if (confirm('Вы уверены?')) {
+                    this.$store.dispatch('signOut');
+                    this.$router.push('/'); 
+                    this.isMenuOpen = false;                     
+                    return                                      
+                } else {
+                    return
+                }
+            }
+            this.$router.push(path);
+            this.isMenuOpen = false;
+        },
+        toggleMenu() {
+            this.isMenuOpen = !this.isMenuOpen;
+        },
         logout() {
             this.$store.dispatch('signOut');
             this.$router.push('/');
@@ -95,7 +117,7 @@ export default {
     align-content: center;
     justify-content: space-between;
     color: rgb(255, 225, 92);
-    line-height: 48px;
+    line-height: 64px;
     padding: 0 64px;  
     @media (min-width: $tablet-min) and (max-width: $tablet-max) {
         padding: 0 32px;
@@ -105,17 +127,61 @@ export default {
         padding: 0 16px;
     } 
 }
+
+.nav-wrap {
+    @media (max-width: $mobile-max) {
+        z-index: 1;
+        background-color: rgb(43, 135, 239);
+        width: 100%;
+        //height: 100%;
+        position: fixed;
+        left: 0;
+        padding: 32px;
+        transition: 0.4s;
+        transform: translateY(-100%);  
+        &.active {
+            transform: translateX(0%);
+        }              
+    }     
+}
 .nav-block {
-    display: flex;    
+    display: flex;
+    @media (max-width: $mobile-max) {
+        font-size: 28px;
+        flex-direction: column;
+    }         
 }
 .nav-item {
     margin-right: 16px;
     cursor: pointer;
-    &.last-item {
-        margin-right: 0;        
-    }
+    @media (max-width: $mobile-max) {
+        width: 100%;
+        border-bottom: 1px solid grey;
+
+    }      
 }
+.menu-btn {
+    display: none;
+    @media (max-width: $mobile-max) {
+        display: block;
+        z-index: 2;        
+        cursor: pointer;
+        position: absolute;
+        content: '';
+        width: 32px;
+        height: 32px;
+        right: 16px;
+        top: 16px;
+        background-image: url('../../assets/img/svg/menu_btn.svg');
+        &.opened {
+            background-image: url('../../assets/img/svg/menu_close_btn.svg');        
+        } 
+    }     
+}
+
+
+
 a {
-    color: rgb(255, 225, 92);
+    color: rgb(255, 231, 124);
 }
 </style>

@@ -10,7 +10,7 @@
         </header>
         <main class="post-body">
             <h3 class="title">{{ post.title }}</h3>
-            <p class="body">{{ post.text }}</p>
+            <div v-html="post.text" class="body"></div>
         </main>
         <footer class="post-footer">
             <button 

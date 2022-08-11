@@ -39,6 +39,7 @@
                     placeholder="Название поста"
                 >
             </div>
+<!--
             <div class="form-item">
                 <textarea 
                     v-model="post.text" 
@@ -47,6 +48,15 @@
                     placeholder="Введите текст.." 
 
                 ></textarea>
+            </div>
+-->
+            <div class="form-item ckeditor">
+                <ckeditor 
+                    v-model="post.text"
+                    :editor="editor"  
+                    :config="editorConfig"
+                    class="ckeditor"                    
+                ></ckeditor>
             </div>
             <div class="btn-block">
                 <button class="btn" @click.prevent="closeForm">Закрыть</button>
@@ -57,6 +67,8 @@
 </template>
 
 <script>
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 export default {
     name: 'CreateEventForm',
     data() {
@@ -69,6 +81,13 @@ export default {
             },
             isPostTypeOpen: false,
             isEventTypeOpen: false,
+
+            editor: ClassicEditor,
+            editorData: '',
+            editorConfig: {
+
+                // The configuration of the editor.
+            }            
         }
     },
     computed: {
@@ -133,7 +152,7 @@ export default {
     top: 0;
 }
 .form {
-    width: 900px;  
+    width: 900px;
     position: fixed;
     left: 50%;
     top: 50%; 
@@ -209,6 +228,9 @@ textarea {
         font-size: 22px;          
         min-height: fit-content;
     }     
+}
+.ckeditor {
+    margin-bottom: 16px;
 }
 .btn-block {
     display: flex;

@@ -10,13 +10,13 @@
                 :key="post.id"
                 :post="post"
                 class="post-item-block"
-                @click="openItem"
+                @click="goToItem(post.id)"                
             />
             <li>
                 <a 
                     v-if="postList.length > 3"
                     class="look-more-link"
-                    @click.prevent="$router.push('post-list-page')"
+                    @click="$router.push('post-list-page')"
                 >
                     Посмотреть ещё
                 </a>
@@ -48,8 +48,9 @@ export default {
         }
     },
     methods: {
-        openItem() {
-            alert('thank you :)')
+        goToItem(id) {
+            this.$store.commit('UPDATE_POST', {})
+            this.$router.push({name: 'post-page', params: {id: id}})
         }
     }, 
 }
@@ -61,7 +62,7 @@ export default {
     padding: 64px;
 }
 .post-item-block {
-    height: 110px;
+    height: 120px;
     margin-bottom: 48px;
     border-radius: 15px;
     box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);

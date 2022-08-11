@@ -13,6 +13,11 @@ const routes = [
         component: () => import('@/views/PostListPage.vue')
     },
     {
+        path: '/post-page/:id',
+        name: 'post-page',
+        component: () => import('@/views/PostPage.vue')
+    },
+    {
         path: '/about-page',
         name: 'about-page',
         component: () => import('@/views/AboutPage.vue')
@@ -43,8 +48,8 @@ const routes = [
         component: () => import('@/views/PhotosessionPage.vue')
     },
     {
-        path: '/profile',
-        name: 'profile',
+        path: '/helen-ruls',
+        name: 'helen-ruls',
         component: () => import('@/views/AdminPage.vue'),
         meta: { authRequired: true }
     },

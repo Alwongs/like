@@ -6,7 +6,15 @@
         </header>
         <main class="post-body">
             <p class="body">{{ post.text }}</p>
+
         </main>
+        <footer class="post-footer">
+            <p class="link">
+                <router-link :to="{name: 'post-page', params: {id: post.id}}">
+                    подробнее
+                </router-link>
+            </p>
+        </footer>
     </li>
 </template>
 
@@ -53,6 +61,7 @@ export default {
         font-style: italic;
     }  
 }
+
 .title {
     font-size: 18px;    
     text-align: center;
@@ -63,8 +72,12 @@ export default {
 }
 .post-footer {
     display: flex;
-    justify-content: space-between; 
-    padding: 8px;   
+    justify-content: flex-end;
+    font-size: 14px; 
+    p {
+        padding: 0;
+        line-height: 14px;
+    }
 }
 .btn {
     padding: 5px 10px;

@@ -9,15 +9,22 @@ export default {
         },
         postList(state) {
             return state.postList;
+        },
+        post(state) {
+            return state.post;
         }
     },
     state: {
-        postList: []
+        postList: [],
+        post: {}
     },
     mutations: {
         UPDATE_POSTS(state, payload) {
             state.postList = payload
-        }
+        },
+        UPDATE_POST(state, payload) {
+            state.post = payload
+        },
     },
     actions: {
         async removePost({commit, dispatch}, id) {
@@ -37,13 +44,11 @@ export default {
             dispatch('getPostList');            
         },
 
-        getPostList({commit}) { 
-
+        async getPostList({commit}) { 
             commit('SET_PROCESSING', true);
             const dbRef = ref(getDatabase());
 
-            get(child(dbRef, `posts`)).then((data) => {
-
+            await get(child(dbRef, `posts`)).then((data) => {
                 if (data.exists()) {
                     const posts = data.val()                 
                     const postArray = Object.keys(posts).map(key => ({...posts[key], id: key}));
@@ -52,6 +57,24 @@ export default {
                     commit('SET_PROCESSING', false);
                 } else {
                     commit('UPDATE_POSTS', [])
+                    commit('SET_PROCESSING', false);
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
+        },   
+
+        async getPost({commit}, id) { 
+            commit('SET_PROCESSING', true);
+            const dbRef = ref(getDatabase());
+
+            await get(child(dbRef, `posts/${id}`)).then((data) => {
+                if (data.exists()) {
+                    const post = data.val()                      
+                    commit('UPDATE_POST', post);
+                    commit('SET_PROCESSING', false);
+                } else {
+                    commit('UPDATE_POST', {})
                     commit('SET_PROCESSING', false);
                 }
             }).catch((error) => {
