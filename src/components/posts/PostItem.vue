@@ -13,7 +13,23 @@
         </header>
         <main class="post-body">
             <h3 class="title">{{ post.title }}</h3>
-            <p>{{ post.text }}</p>
+            <ul class="image-list">
+                <li               
+                    v-for="url in post.imageList"
+                    class="image-item mr-16"  
+                    :key="url"
+                >
+                    <div class="img-block">
+                        <img :src="url" :alt="url">
+                    </div>
+                </li>
+            </ul>            
+            <p v-html="post.text"></p>
+            <p class="link">
+                <router-link :to="{name: 'post-page', params: {id: post.id}}">
+                    подробнее
+                </router-link>
+            </p>            
         </main>
         <footer class="post-footer">
             <button 
@@ -89,7 +105,16 @@ export default {
         line-height: 26px;     
     }  
 }
-
+.img-block {
+    height: 200px;
+    margin-bottom: 16px;
+    img {
+        height: 100%;
+    }
+}
+.image-list {
+    display: flex;
+}
 .post-footer {
     display: flex;
     justify-content: space-between; 

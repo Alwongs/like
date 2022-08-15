@@ -5,7 +5,7 @@
             <div class="right">{{ getDate(post.id) }}</div>
         </header>
         <main class="post-body">
-            <p class="body">{{ post.text }}</p>
+            <p v-html="post.text" class="body"></p>
 
         </main>
         <footer class="post-footer">

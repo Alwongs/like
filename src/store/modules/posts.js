@@ -1,4 +1,5 @@
 import { getDatabase, set, ref, child, get, update, remove } from "firebase/database";
+import { getStorage, ref as stRef, getDownloadURL , uploadBytesResumable} from "firebase/storage"
 import sortList from '../../funcs/sort.js'
 
 export default {
@@ -12,11 +13,19 @@ export default {
         },
         post(state) {
             return state.post;
+        },
+        postImageList(state) {
+            return state.postImageList;
+        },
+        isAbleUploadButton(state) {
+            return state.isAbleUploadButton
         }
     },
     state: {
         postList: [],
-        post: {}
+        post: {},
+        postImageList: [],
+        isAbleUploadButton: true
     },
     mutations: {
         UPDATE_POSTS(state, payload) {
@@ -24,6 +33,12 @@ export default {
         },
         UPDATE_POST(state, payload) {
             state.post = payload
+        },
+        UPDATE_POST_IMAGE_LIST(state, payload) {
+            state.postImageList = payload
+        },
+        ENABLE_UPLOAD_BUTTON(state, payload) {
+            state.isAbleUploadButton = payload
         },
     },
     actions: {
@@ -34,14 +49,6 @@ export default {
             await remove(ref(db, `posts/${postId}`));
             dispatch('getPostList');
             commit('SET_PROCESSING', false);
-        },
-
-        async savePost({dispatch}, post) { 
-            const postId = Date.now();
-            const db = getDatabase();
-
-            await set(ref(db, `posts/${postId}`), post);
-            dispatch('getPostList');            
         },
 
         async getPostList({commit}) { 
@@ -82,10 +89,61 @@ export default {
             });
         },   
         
+        uploadImages({commit}, files) {
+            commit('ENABLE_UPLOAD_BUTTON', false) 
+            const preview = document.querySelector('.preview-group')
+            const storage = getStorage()
+            let counter = 0
+            let urlList = []
+
+            files.forEach((file, index) => {
+
+                const progressBlock = preview.querySelectorAll('.preview-progress-info')[index]
+
+                const storageRef = stRef(storage, `images/${file.name}`)
+                const uploadTask = uploadBytesResumable(storageRef, file)
+                
+                uploadTask.on('state_changed', 
+                (snapshot) => {
+                    const progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0)
+
+                    progressBlock.style.width = progress + '%'
+                    progressBlock.textContent = progress + '%'
+                    if (parseInt(progress) === 100) {
+                        counter++
+                    }
+                    console.log(counter + ' from ' + files.length)
+                    if (counter === files.length) {
+                        console.log('success!')
+                    }
+                }, (error) => {
+                    console.log(error)
+                }, () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        urlList.push(downloadURL)
+                        if (urlList.length === files.length) {
+                            commit('UPDATE_POST_IMAGE_LIST', urlList)
+                        }
+                    })                   
+                }) 
+
+            })  
+        }, 
+ 
+        async savePost({dispatch}, post) { 
+            console.log(post)
+
+            const postId = Date.now();
+            const db = getDatabase();
+
+            await set(ref(db, `posts/${postId}`), post);
+            dispatch('getPostList');   
+            
+        },
+        
         async updatePost({commit}, post) {
             try {              
                 const db = getDatabase();
-         
                 const updates = {};
                 updates[`posts/${post.id}`] = post;
 
@@ -94,6 +152,23 @@ export default {
                 commit('SET_ERROR', e)
                 throw e                
             }                
-        }         
+        },
+
+
+
+
+
+        downloadImages(_, files) {
+            const storage = getStorage();            
+            files.forEach(file => {
+                getDownloadURL(ref(storage, `images/${file.name}`))
+                .then((url) => {
+                    console.log(url)
+                })
+                .catch((error) => {
+                    console.log(error)
+                });  
+            })            
+        }
     }
 }

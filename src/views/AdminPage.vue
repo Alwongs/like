@@ -58,7 +58,7 @@ export default {
         return {
             isCreateFormOpen: false,
             isEditFormOpen: false,
-            post: {}
+            post: {},
         }
     },
     computed: {
@@ -67,7 +67,7 @@ export default {
         },
         postList() {
             return this.$store.getters.postList;
-        }
+        },
     },
     methods: {
         openCreateForm() {

@@ -4,7 +4,7 @@
             <h2 class="form-title">Создание нового поста</h2>
             <div class="form-item select-type-input">
                 <input 
-                    v-model="post.postType" 
+                    v-model="postType" 
                     class="title" 
                     placeholder="Выберете тип поста.."
                     readonly
@@ -15,10 +15,9 @@
                     <li @click="selectPostType('post')">Отчёт</li>
                 </ul>                
             </div>
-
             <div class="form-item select-type-input">
                 <input 
-                    v-model="post.eventType" 
+                    v-model="eventType" 
                     class="title" 
                     placeholder="Выберете тип события.."
                     readonly
@@ -34,88 +33,252 @@
             </div>
             <div class="form-item">
                 <input 
-                    v-model="post.title" 
+                    v-model="title" 
                     class="title" 
                     placeholder="Название поста"
                 >
             </div>
-<!--
-            <div class="form-item">
-                <textarea 
-                    v-model="post.text" 
-                    type="text" 
-                    class="text" 
-                    placeholder="Введите текст.." 
-
-                ></textarea>
+            <div class="form-item mb-16">
+                <button 
+                    :disabled="!isAbleUploadButton"                
+                    class="btn btn-trigger mr-16"
+                    @click.prevent="triggerUpload" 
+                >
+                    Выбрать фото
+                </button>
+                <button 
+                    v-if="previewList.length > 0"
+                    :disabled="!isAbleUploadButton"
+                    class="btn btn-trigger"
+                    @click.prevent="uploadImagesHandler" 
+                >
+                    Загрузить
+                </button>
             </div>
--->
+
+            <div 
+                v-if="previewList.length > 0"
+                class="form-item preview-group mb-16"
+            >
+                <div
+                    v-for="image in previewList"
+                    :key="image" 
+                    class="preview-item border-white"
+                >
+
+                    <div 
+                        v-if="!uploading"                    
+                        class="preview-remove" 
+                        @click.prevent="removePreviewItem(image.name)"
+                    >
+                        &times;
+                    </div>
+                    <img 
+                        :src="image.src"
+                        :alt="image.name"
+                    >
+                    <div v-if="!uploading" class="preview-footer preview-info">
+                        <span>{{ image.name }}</span>
+                        <span>{{ convertSize(image.size) }}</span>
+                    </div>
+                    <div 
+                        class="preview-footer preview-progress"
+                        :class="{show: uploading}"
+                    >
+                        <div class="preview-progress-info"></div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-item file-input">
+                <input 
+                    type="file"
+                    ref="fileInput"
+                    style="display:none;"
+                    accept="image/*"
+                    multiple
+                    placeholder="Название поста"
+                    class="title" 
+                    @change="onFileChange"
+                >
+            </div>
             <div class="form-item ckeditor">
                 <ckeditor 
-                    v-model="post.text"
+                    v-model="text"
                     :editor="editor"  
-                    :config="editorConfig"
+                    :config="editorConfig"              
                     class="ckeditor"                    
                 ></ckeditor>
             </div>
             <div class="btn-block">
-                <button class="btn" @click.prevent="closeForm">Закрыть</button>
-                <button class="btn btn__green" @click.prevent="savePost">Сохранить</button>
+                <button 
+                    class="btn" 
+                    @click.prevent="closeForm"
+                >
+                    Закрыть
+                </button>
+                <button                   
+                    class="btn btn__green" 
+                    @click.prevent="savePost"
+                >
+                    Сохранить
+                </button>
             </div>
         </form>
     </div>
 </template>
 
 <script>
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import bitesToSize from '@/funcs/bitesToSize.js'
+import { getStorage, ref as stRef, uploadBytesResumable, /*uploadBytes,*/ getDownloadURL } from "firebase/storage"
 
 export default {
     name: 'CreateEventForm',
     data() {
         return {
-            post: {
-                postType: '',
-                eventType: '',
-                title: '',
-                text: '',
-            },
             isPostTypeOpen: false,
-            isEventTypeOpen: false,
+            isEventTypeOpen: false,            
+
+            postType: '',
+            eventType: '',
+            title: '',
+            text: '',               
+
+            files: null,
+            previewList: [],
+            uploading: false,
 
             editor: ClassicEditor,
             editorData: '',
             editorConfig: {
-
                 // The configuration of the editor.
             }            
         }
     },
     computed: {
         userId() {
-            return this.$store.getters.userId;
+            return this.$store.getters.userId
+        },
+        isAbleUploadButton() {
+            return this.$store.getters.isAbleUploadButton
+        },
+        postImageList() {
+            return this.$store.getters.postImageList
         }
     },
     methods: {
+        convertSize(size) {
+            return bitesToSize(size)
+        },
+
+        removePreviewItem(name) { 
+            this.files = this.files.filter(file => file.name !== name)
+            this.previewList = this.previewList.filter(image => image.name !== name)
+        },
+
+        onFileChange(event) {
+            this.files = null
+            this.previewList = []
+
+            if (!event.target.files) {
+                return
+            }
+            this.files = Array.from(event.target.files)
+            if (this.files.length > 4) {
+                alert('Не больше 4 файлов!')
+                return
+            }
+            this.files.forEach(file => {
+                if (!file.type.match('image')) {
+                    return
+                }
+                const reader = new FileReader()
+                            
+                reader.onload = ev => {
+                    const src = ev.target.result
+                    this.previewList.push({
+                        name: file.name,
+                        size: file.size,
+                        src: src
+                    })                   
+                }
+                reader.readAsDataURL(file)
+            })
+
+        },
+
+        async uploadImagesHandler() {
+            this.uploading = true
+            await this.$store.dispatch('uploadImages', this.files)
+        },
+
+        uploadImagesBroken() {
+                            this.uploading = true
+            const preview = document.querySelector('.preview-group')
+
+            const storage = getStorage();
+            this.files.forEach((file, index) => {
+                const progressBlock = preview.querySelectorAll('.preview-progress-info')[index]
+
+                const storageRef = stRef(storage, `images/${file.name}`)
+                const uploadTask = uploadBytesResumable(storageRef, file)
+                uploadTask.on('state_changed', 
+
+                (snapshot) => {
+                    const progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0)
+
+                    progressBlock.style.width = progress + '%'
+                    progressBlock.textContent = progress + '%'
+
+
+
+                    //console.log('Upload is ' + progress + '% done')
+
+                    switch (snapshot.state) {
+                    case 'paused':
+                        //console.log('Upload is paused')
+                        break;
+                    case 'running':
+                        //console.log('Upload is running')
+                        break;
+                    }
+
+                }, (error) => {
+                    console.log(error)
+                }, () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        console.log('File available at', downloadURL)
+
+                    })
+                })
+            })                        
+        },        
+
+        triggerUpload() {
+            this.$refs.fileInput.click();
+        },
         selectPostType(option) {
-            this.post.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
+            this.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
             this.isPostTypeOpen = false;
         },
         selectEventType(option) {
             switch (option) {
             case 'tracking':
-                this.post.eventType = 'Поход';
+                this.eventType = 'Поход';
                 break;
             case 'excursion':
-                this.post.eventType = 'Экскурсия';
+                this.eventType = 'Экскурсия';
                 break;
             case 'photosession':
-                this.post.eventType = 'Фотосессия';
+                this.eventType = 'Фотосессия';
                 break;
             case 'ural':
-                this.post.eventType = 'Поездка Урал';
+                this.eventType = 'Поездка Урал';
                 break;
             case 'crimea':
-                this.post.eventType = 'Поездка в Крым';
+                this.eventType = 'Поездка в Крым';
                 break;
             default:
                 alert('');
@@ -130,11 +293,25 @@ export default {
             this.isEventTypeOpen = !this.isEventTypeOpen
             this.isPostTypeOpen = false            
         },
+
         async savePost() {
-            await this.$store.dispatch('savePost', this.post);
-            this.$emit('closeForm')
+            console.log('savePost')
+
+            await this.$store.dispatch('savePost', {
+                postType: this.postType,
+                eventType: this.eventType,
+                title: this.title,
+                text: this.text,               
+                imageList: this.postImageList,                
+            });
+
+            //await this.$store.dispatch('uploadImages', this.files)
+
+            //this.$emit('closeForm')
         },
+
         closeForm() {
+            this.$store.commit('ENABLE_UPLOAD_BUTTON', true)
             this.$emit('closeForm')
         }
     } ,    
@@ -216,21 +393,86 @@ export default {
         background-color: rgb(222, 222, 222);
     }
 }
-textarea {
-    font-size: 14px;     
-    width: 100%;
-    height: 300px;
-    margin-bottom: 16px;
-    border-radius: 5px; 
-    outline: none;       
-    padding: 8px;
-    @media (max-width: $mobile-max) {
-        font-size: 22px;          
-        min-height: fit-content;
-    }     
-}
+
 .ckeditor {
     margin-bottom: 16px;
+}
+.preview-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+.preview-item {
+    text-align: center;
+    position: relative;
+    height: 150px;
+    width: 150px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    &:hover .preview-remove {
+        opacity: 1;
+    }
+    &:hover .preview-info {
+        bottom: 0;
+    }
+}
+.preview-remove {
+    opacity: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity .22s;
+}
+.preview-footer {
+    background-color: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 25px;
+    cursor: pointer;
+    font-size: 10px;
+}
+.preview-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+    bottom: -30px;
+    transition: bottom .22s;
+    span {
+        flex: 1 1 50%;
+        overflow: hidden;
+        text-align: end;
+    }
+}
+
+.preview-progress {
+    bottom: -30px;
+    padding: 0;
+    &.show {
+        bottom: 0;
+    }
+}
+.preview-progress-info {
+    transition: width .22s;
+    background-color: rgb(71, 149, 93);
+    height: 100%;
+    width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+}
+.preview-item img {
+    height: 100%;
 }
 .btn-block {
     display: flex;
@@ -249,10 +491,20 @@ textarea {
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);  
     border: 1px solid grey; 
     cursor: pointer; 
+    &:disabled {
+        background-color: rgb(214, 214, 214); 
+        cursor: default;                    
+    } 
     &__green {
         background-color: rgb(56, 146, 68);
         border: 1px solid white;
         color: white;
+        &:hover {
+            background-color: rgb(26, 103, 21);
+        } 
+        &:disabled {
+            background-color: rgb(214, 214, 214);            
+        }               
     }
     @media (max-width: $mobile-max) {
         font-size: 22px;

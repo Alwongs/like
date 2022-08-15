@@ -3,15 +3,28 @@
         <header class="post-header">
             <div 
                 class="left"
-                :class="{ red: post.postType === 'Анонс' }"                
+                :class="{ red: post.postType === 'Aнонс' }"                
             >
                 {{ post.postType }}</div>
             <div class="right">{{ getDate(post.id) }}</div>
         </header>
+
         <main class="post-body">
             <h3 class="title">{{ post.title }}</h3>
+            <ul class="image-list">
+                <li               
+                    v-for="url in post.imageList"
+                    class="image-item mr-16"  
+                    :key="url"
+                >
+                    <div class="img-block">
+                        <img :src="url" :alt="url">
+                    </div>
+                </li>
+            </ul>
             <div v-html="post.text" class="body"></div>
         </main>
+
         <footer class="post-footer">
             <button 
                 class="btn btn__blue"
@@ -31,11 +44,15 @@
 
 <script>
 import moment from 'moment';
+import bitesToSize from '@/funcs/bitesToSize.js'
 
 export default {
     name: 'PostItem',
     props: ['post'],
     methods: {
+        convertSize(size) {
+            return bitesToSize(size)
+        },        
         deletePost() {
             if (confirm('Лена, ты хочешь удалить этот пост?   (°□°) ')) {
                 this.$store.dispatch('removePost', this.post.id)
@@ -79,9 +96,20 @@ export default {
     text-align: center;
     margin-bottom: 8px;
 }
+.img-block {
+    height: 200px;
+    margin-bottom: 16px;
+    img {
+        height: 100%;
+    }
+}
+.image-list {
+    display: flex;
+}
 .body {
     line-height: 26px;
 }
+
 .post-footer {
     display: flex;
     justify-content: space-between; 

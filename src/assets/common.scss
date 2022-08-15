@@ -4,8 +4,20 @@
     box-sizing: border-box;
     font-family: 'Roboto';
 }
-.border {
+.border-red {
     border: 2px solid red;
+}
+.border-blue {
+    border: 2px solid blue;
+}
+.border-green {
+    border: 2px solid green;
+}
+.border-grey {
+    border: 2px solid grey;
+}
+.border-white {
+    border: 2px solid white;    
 }
 html, body {
     background-image: url('~@/assets/img/jpg/bg_image.jpg');
@@ -87,6 +99,12 @@ p {
 }
 .pl-32 {
     padding-left: 32px;
+}
+.mr-8 {
+    margin-right: 8px;
+}
+.mr-16 {
+    margin-right: 16px;
 }
 .img-content {
     width: 100%;
