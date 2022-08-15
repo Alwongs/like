@@ -53,9 +53,14 @@ export default {
         convertSize(size) {
             return bitesToSize(size)
         },        
-        deletePost() {
+        async deletePost() {
             if (confirm('Лена, ты хочешь удалить этот пост?   (°□°) ')) {
-                this.$store.dispatch('removePost', this.post.id)
+                if (this.post.imageList) {
+                    this.post.imageList.forEach(image => {
+                        this.$store.dispatch('deleteImages', image.name)
+                    });
+                }
+                await this.$store.dispatch('removePost', this.post.id)
             }
         },
         openForm() {

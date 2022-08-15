@@ -78,11 +78,11 @@ export default {
             })  
         }, 
         
-        deleteImages(_, imageName) {
+        async deleteImages(_, imageName) {
             const storage = getStorage();  
             const desertRef = stRef(storage, `images/${imageName}`);
             
-            deleteObject(desertRef).then(() => {
+            await deleteObject(desertRef).then(() => {
 
               console.log('successfully deleted: ' + imageName)
             }).catch((error) => {

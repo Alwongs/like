@@ -32,7 +32,7 @@ export default {
             const db = getDatabase();
             commit('SET_PROCESSING', true);
             await remove(ref(db, `posts/${postId}`));
-            dispatch('getPostList');
+            await dispatch('getPostList');
             commit('SET_PROCESSING', false);
         },
 

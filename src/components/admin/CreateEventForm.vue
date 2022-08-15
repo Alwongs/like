@@ -263,7 +263,7 @@ export default {
 
             //await this.$store.dispatch('uploadImages', this.files)
 
-            //this.$emit('closeForm')
+            this.$emit('closeForm')
         },
 
         closeForm() {
