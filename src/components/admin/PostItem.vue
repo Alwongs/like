@@ -13,12 +13,12 @@
             <h3 class="title">{{ post.title }}</h3>
             <ul class="image-list">
                 <li               
-                    v-for="url in post.imageList"
+                    v-for="image in post.imageList"
                     class="image-item mr-16"  
-                    :key="url"
+                    :key="image.url"
                 >
                     <div class="img-block">
-                        <img :src="url" :alt="url">
+                        <img :src="image.url" :alt="image.name">
                     </div>
                 </li>
             </ul>

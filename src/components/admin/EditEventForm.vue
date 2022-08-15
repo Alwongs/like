@@ -40,15 +40,79 @@
                     placeholder="Название поста"
                 >
             </div>
-            <div class="form-item">
-                <textarea 
-                    v-model="post.text" 
-                    type="text" 
-                    class="text" 
-                    placeholder="Введите текст.." 
-                    cols="30" 
-                    rows="10"
-                ></textarea>
+
+            <div class="form-item mb-16">
+                <button 
+                    :disabled="!isAbleUploadButton"                
+                    class="btn btn-trigger mr-16"
+                    @click.prevent="triggerUpload" 
+                >
+                    Выбрать фото
+                </button>
+                <button 
+                    v-if="post.imageList"
+                    :disabled="!isAbleUploadButton"
+                    class="btn btn-trigger"
+                    @click.prevent="uploadImagesHandler" 
+                >
+                    Загрузить
+                </button>
+            </div>
+
+            <div 
+                v-if="post.imageList"
+                class="form-item preview-group mb-16"
+            >
+                <div
+                    v-for="image in post.imageList"
+                    :key="image.url" 
+                    class="preview-item border-white"
+                >
+
+                    <div 
+                        v-if="!uploading"                    
+                        class="preview-remove" 
+                        @click.prevent="removePreviewItem(image.name)"
+                    >
+                        &times;
+                    </div>
+                    <img 
+                        :src="image.url"
+                        :alt="image.name"
+                    >
+                    <div v-if="!uploading" class="preview-footer preview-info">
+                        <span>{{ image.name }}</span>
+                        <span>{{ convertSize(image.size) }}</span>
+                    </div>
+                    <div 
+                        class="preview-footer preview-progress"
+                        :class="{show: uploading}"
+                    >
+                        <div class="preview-progress-info"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-item file-input">
+                <input 
+                    type="file"
+                    ref="fileInputEdit"
+                    style="display:none;"
+                    accept="image/*"
+                    multiple
+                    placeholder="Название поста"
+                    class="title" 
+                    @change="onFileChange"
+                >
+            </div>
+
+
+            <div class="form-item ckeditor">
+                <ckeditor 
+                    v-model="post.text"
+                    :editor="editor"  
+                    :config="editorConfig"              
+                    class="ckeditor"                    
+                ></ckeditor>
             </div>
             <div class="btn-block">
                 <button class="btn" @click.prevent="closeForm">Закрыть</button>
@@ -59,14 +123,27 @@
 </template>
 
 <script>
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import bitesToSize from '@/funcs/bitesToSize.js'
+
+
 export default {
-    name: 'CreateEventForm',
+    name: 'EditEventForm',
     props: ['postForEdit'],
     data() {
         return {
-            post: {},
+            post: this.postForEdit,
             isPostTypeOpen: false,
-            isEventTypeOpen: false,            
+            isEventTypeOpen: false, 
+            uploading: false, 
+            files: null,   
+                               
+            
+            editor: ClassicEditor,
+            editorData: '',
+            editorConfig: {
+                // The configuration of the editor.
+            }             
         }
     },
     computed: {
@@ -74,10 +151,69 @@ export default {
             return this.$store.getters.getProcessing
         },
         userId() {
-            return this.$store.getters.userId;
-        }
+            return this.$store.getters.userId
+        },
+        isAbleUploadButton() {
+            return this.$store.getters.isAbleUploadButton
+        },
+        postImageList() {
+            return this.$store.getters.postImageList
+        }      
     },
     methods: {
+        onFileChange(event) {
+
+            this.files = null
+            this.post.imageList = []
+
+            if (!event.target.files) {
+                return
+            }
+            this.files = Array.from(event.target.files)
+            if (this.files.length > 4) {
+                alert('Не больше 4 файлов!')
+                return
+            }
+            this.files.forEach(file => {
+                if (!file.type.match('image')) {
+                    return
+                }
+                const reader = new FileReader()
+                            
+                reader.onload = ev => {
+                    const url = ev.target.result
+
+                    this.post.imageList.push({
+                        name: file.name,
+                        size: file.size,
+                        url: url
+                    })                   
+                }
+                reader.readAsDataURL(file)
+            })
+
+        },      
+        triggerUpload() {
+            this.$refs.fileInputEdit.click();
+        },
+        async uploadImagesHandler() {
+            this.uploading = true
+            await this.$store.dispatch('uploadImages', this.files)
+        },  
+
+        async removePreviewItem(imageName) { 
+            if (this.files) {
+                this.files = this.files.filter(file => file.name !== imageName)
+            }
+            this.post.imageList = this.post.imageList.filter(image => image.name !== imageName)
+
+            await this.$store.dispatch('deleteImages', imageName)
+            //this.$store.commit('UPDATE_POST_IMAGE_LIST', this.post.imageList)
+        },        
+
+        convertSize(size) {
+            return bitesToSize(size)
+        },        
         selectPostType(option) {
             this.post.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
             this.isPostTypeOpen = false;
@@ -123,7 +259,10 @@ export default {
         }
     }, 
     mounted() {
+        /*
         this.post = this.postForEdit;
+        this.editorData = this.postForEdit.text;
+        */
     }
 }
 </script>
@@ -203,18 +342,85 @@ export default {
         background-color: rgb(222, 222, 222);
     }
 }
-textarea {
-    font-size: 14px;     
-    width: 100%;
-    height: 300px;
+.preview-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+.preview-item {
+    text-align: center;
+    position: relative;
+    height: 150px;
+    width: 150px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    &:hover .preview-remove {
+        opacity: 1;
+    }
+    &:hover .preview-info {
+        bottom: 0;
+    }
+}
+.preview-remove {
+    opacity: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity .22s;
+}
+.preview-footer {
+    background-color: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 25px;
+    cursor: pointer;
+    font-size: 10px;
+}
+.preview-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+    bottom: -30px;
+    transition: bottom .22s;
+    span {
+        flex: 1 1 50%;
+        overflow: hidden;
+        text-align: end;
+    }
+}
+
+.preview-progress {
+    bottom: -30px;
+    padding: 0;
+    &.show {
+        bottom: 0;
+    }
+}
+.preview-progress-info {
+    transition: width .22s;
+    background-color: rgb(71, 149, 93);
+    height: 100%;
+    width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+}
+.preview-item img {
+    height: 100%;
+}
+.ckeditor {
     margin-bottom: 16px;
-    border-radius: 5px; 
-    outline: none;       
-    padding: 8px;
-    @media (max-width: $mobile-max) {
-        font-size: 22px;          
-        min-height: 100%;
-    }     
 }
 .btn-block {
     display: flex;

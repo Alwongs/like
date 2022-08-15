@@ -62,7 +62,7 @@
             >
                 <div
                     v-for="image in previewList"
-                    :key="image" 
+                    :key="image.url" 
                     class="preview-item border-white"
                 >
 
@@ -74,7 +74,7 @@
                         &times;
                     </div>
                     <img 
-                        :src="image.src"
+                        :src="image.url"
                         :alt="image.name"
                     >
                     <div v-if="!uploading" class="preview-footer preview-info">
@@ -89,12 +89,10 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="form-item file-input">
                 <input 
                     type="file"
-                    ref="fileInput"
+                    ref="fileInputCreate"
                     style="display:none;"
                     accept="image/*"
                     multiple
@@ -103,6 +101,7 @@
                     @change="onFileChange"
                 >
             </div>
+            
             <div class="form-item ckeditor">
                 <ckeditor 
                     v-model="text"
@@ -132,7 +131,6 @@
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import bitesToSize from '@/funcs/bitesToSize.js'
-import { getStorage, ref as stRef, uploadBytesResumable, /*uploadBytes,*/ getDownloadURL } from "firebase/storage"
 
 export default {
     name: 'CreateEventForm',
@@ -169,6 +167,12 @@ export default {
         }
     },
     methods: {
+
+        async uploadImagesHandler() {
+            this.uploading = true
+            await this.$store.dispatch('uploadImages', this.files)
+        },     
+
         convertSize(size) {
             return bitesToSize(size)
         },
@@ -197,67 +201,20 @@ export default {
                 const reader = new FileReader()
                             
                 reader.onload = ev => {
-                    const src = ev.target.result
+                    const url = ev.target.result
                     this.previewList.push({
                         name: file.name,
                         size: file.size,
-                        src: src
+                        url: url
                     })                   
                 }
                 reader.readAsDataURL(file)
             })
 
-        },
-
-        async uploadImagesHandler() {
-            this.uploading = true
-            await this.$store.dispatch('uploadImages', this.files)
-        },
-
-        uploadImagesBroken() {
-                            this.uploading = true
-            const preview = document.querySelector('.preview-group')
-
-            const storage = getStorage();
-            this.files.forEach((file, index) => {
-                const progressBlock = preview.querySelectorAll('.preview-progress-info')[index]
-
-                const storageRef = stRef(storage, `images/${file.name}`)
-                const uploadTask = uploadBytesResumable(storageRef, file)
-                uploadTask.on('state_changed', 
-
-                (snapshot) => {
-                    const progress = ((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed(0)
-
-                    progressBlock.style.width = progress + '%'
-                    progressBlock.textContent = progress + '%'
-
-
-
-                    //console.log('Upload is ' + progress + '% done')
-
-                    switch (snapshot.state) {
-                    case 'paused':
-                        //console.log('Upload is paused')
-                        break;
-                    case 'running':
-                        //console.log('Upload is running')
-                        break;
-                    }
-
-                }, (error) => {
-                    console.log(error)
-                }, () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-                        console.log('File available at', downloadURL)
-
-                    })
-                })
-            })                        
-        },        
+        },       
 
         triggerUpload() {
-            this.$refs.fileInput.click();
+            this.$refs.fileInputCreate.click();
         },
         selectPostType(option) {
             this.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
@@ -295,7 +252,6 @@ export default {
         },
 
         async savePost() {
-            console.log('savePost')
 
             await this.$store.dispatch('savePost', {
                 postType: this.postType,

@@ -5,20 +5,20 @@
             <h1>{{ post.title }}</h1>
             <ul class="image-list">
                 <li               
-                    v-for="url in post.imageList"
+                    v-for="image in post.imageList"
                     class="image-item mr-16"  
-                    :key="url"
+                    :key="image.url"
                 >
                     <div class="img-block">
-                        <img :src="url" :alt="url">
+                        <img :src="image.url" :alt="image.name">
                     </div>
                 </li>
             </ul>            
             <p v-html="post.text"></p>
             <p class="link">
-                <router-link :to="{name: 'post-list-page'}">
+                <a href="#" @click.prevent="$router.go(-1)">
                     назад
-                </router-link>
+                </a>
             </p>            
         </div>
     </div>
