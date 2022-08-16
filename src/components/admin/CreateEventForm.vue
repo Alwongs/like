@@ -8,6 +8,7 @@
                     class="title" 
                     placeholder="Выберете тип поста.."
                     readonly
+                    required
                     @click="openPostTypeBlock"                    
                 >
                 <ul v-if="isPostTypeOpen" class="select-type-block">
@@ -119,6 +120,7 @@
                 </button>
                 <button                   
                     class="btn btn__green" 
+                    type="submit"
                     @click.prevent="savePost"
                 >
                     Сохранить
@@ -252,6 +254,19 @@ export default {
         },
 
         async savePost() {
+            if (
+                this.postType === '' ||
+                this.eventType === '' ||
+                this.title === '' ||
+                this.text === ''
+            ) {
+                alert('заполните поля!')
+                return
+            }
+            if (this.previewList.length !== this.postImageList.length) {
+                alert('загрузите файлы!')
+                return
+            }
 
             await this.$store.dispatch('savePost', {
                 postType: this.postType,

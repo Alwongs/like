@@ -249,6 +249,17 @@ export default {
             this.isPostTypeOpen = false              
         },        
         async updatePost() {
+            if (
+                this.post.title === '' ||
+                this.post.text === ''
+            ) {
+                alert('заполните поля!')
+                return
+            }
+            if (this.post.imageList.length !== this.postImageList.length) {
+                alert('загрузите файлы!')
+                return
+            }            
             this.$store.commit('SET_PROCESSING', true);
             await this.$store.dispatch('updatePost', this.post);
             this.$store.commit('SET_PROCESSING', false);            
