@@ -15,18 +15,6 @@
                 + Добавить пост
             </button> 
 
-            <create-event-form 
-                v-if="isCreateFormOpen" 
-                class="form-block"
-                @closeForm="closeCreateForm" 
-            />
-            <edit-event-form 
-                v-if="isEditFormOpen"
-                :postForEdit="post"
-                class="form-block"
-                @closeForm="closeEditForm" 
-            />
-
             <h2>Посты:</h2>
             <ul v-if="postList" class="post-list">
                 <post-item 
@@ -34,24 +22,34 @@
                     :key="post.id"
                     :post="post"
                     class="post-item-block"
-                    @openForm="openEditForm"
+                    @openEditForm="openEditForm(post)"
                 />
             </ul>
             <p v-else>Список пуст..</p>
-        </main>        
+        </main>
+
+        <create-post 
+            v-if="isCreateFormOpen"
+            @closeForm="isCreateFormOpen = false"
+        />
+        <edit-post 
+            v-if="isEditFormOpen"
+            :postForEdit="post"
+            @closeForm="isEditFormOpen = false"
+        />                
     </div>
 </template>
 
 <script>
-import CreateEventForm from '@/components/admin/CreateEventForm.vue'
-import EditEventForm from '@/components/admin/EditEventForm.vue'
+import CreatePost from '@/components/admin/forms/CreatePost.vue'
+import EditPost from '@/components/admin/forms/EditPost.vue'
 import PostItem from '@/components/admin/PostItem.vue';
 
 export default {
     name: 'AdminPage',
     components: { 
-        CreateEventForm,
-        EditEventForm,
+        CreatePost,
+        EditPost,
         PostItem
     },
     data() {
@@ -78,6 +76,8 @@ export default {
         },
 
         openEditForm(post) {
+            console.log(post.imageList)
+            this.$store.commit('UPDATE_POST_IMAGE_LIST', post.imageList || [])
             this.post = post
             this.isEditFormOpen = true;
         },

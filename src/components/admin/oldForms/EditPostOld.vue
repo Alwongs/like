@@ -1,15 +1,16 @@
 <template>
     <div class="background-wrapper">
         <form class="form">
-            <h2 class="form-title">Создание нового поста</h2>
+            <p v-if="loading" class="loading">Обновление поста...</p>
+
+            <h2 class="form-title">Редактирование</h2>
             <div class="form-item select-type-input">
                 <input 
-                    v-model="postType" 
+                    v-model="post.postType" 
                     class="title" 
-                    placeholder="Выберете тип поста.."
+                    placeholder="тип поста.. (анонс, отчёт..)"
                     readonly
-                    required
-                    @click="openPostTypeBlock"                    
+                    @click="openPostTypeBlock"                       
                 >
                 <ul v-if="isPostTypeOpen" class="select-type-block">
                     <li @click="selectPostType('announce')">Анонс</li>
@@ -18,11 +19,11 @@
             </div>
             <div class="form-item select-type-input">
                 <input 
-                    v-model="eventType" 
+                    v-model="post.eventType" 
                     class="title" 
-                    placeholder="Выберете тип события.."
+                    placeholder="тип события.. (экскурсия, поход, фотосессия..)"
                     readonly
-                    @click="openEventTypeBlock"                      
+                    @click="openEventTypeBlock"  
                 >
                 <ul v-if="isEventTypeOpen" class="select-type-block">
                     <li @click="selectEventType('tracking')">Поход</li>
@@ -30,15 +31,16 @@
                     <li @click="selectEventType('photosession')">Фотосессия</li>
                     <li @click="selectEventType('ural')">Поездка Урал</li>
                     <li @click="selectEventType('crimea')">Поездка в Крым</li>
-                </ul>                
+                </ul>                 
             </div>
             <div class="form-item">
                 <input 
-                    v-model="title" 
+                    v-model="post.title" 
                     class="title" 
                     placeholder="Название поста"
                 >
             </div>
+
             <div class="form-item mb-16">
                 <button 
                     :disabled="!isAbleUploadButton"                
@@ -48,7 +50,7 @@
                     Выбрать фото
                 </button>
                 <button 
-                    v-if="previewList.length > 0"
+                    v-if="post.imageList"
                     :disabled="!isAbleUploadButton"
                     class="btn btn-trigger"
                     @click.prevent="uploadImagesHandler" 
@@ -58,11 +60,11 @@
             </div>
 
             <div 
-                v-if="previewList.length > 0"
+                v-if="post.imageList"
                 class="form-item preview-group mb-16"
             >
                 <div
-                    v-for="image in previewList"
+                    v-for="image in post.imageList"
                     :key="image.url" 
                     class="preview-item border-white"
                 >
@@ -93,7 +95,7 @@
             <div class="form-item file-input">
                 <input 
                     type="file"
-                    ref="fileInputCreate"
+                    ref="fileInputEdit"
                     style="display:none;"
                     accept="image/*"
                     multiple
@@ -102,29 +104,19 @@
                     @change="onFileChange"
                 >
             </div>
-            
+
+
             <div class="form-item ckeditor">
                 <ckeditor 
-                    v-model="text"
+                    v-model="post.text"
                     :editor="editor"  
                     :config="editorConfig"              
                     class="ckeditor"                    
                 ></ckeditor>
             </div>
             <div class="btn-block">
-                <button 
-                    class="btn" 
-                    @click.prevent="closeForm"
-                >
-                    Закрыть
-                </button>
-                <button                   
-                    class="btn btn__green" 
-                    type="submit"
-                    @click.prevent="savePost"
-                >
-                    Сохранить
-                </button>
+                <button class="btn" @click.prevent="closeForm">Закрыть</button>
+                <button class="btn btn__green" @click.prevent="updatePost">Сохранить</button>
             </div>
         </form>
     </div>
@@ -132,32 +124,32 @@
 
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
-import bitesToSize from '@/funcs/bitesToSize.js'
+import bitesToSize from '@/functions/bitesToSize.js'
+
 
 export default {
-    name: 'CreateEventForm',
+    name: 'EditEventForm',
+    props: ['postForEdit'],
     data() {
         return {
+            post: this.postForEdit,
             isPostTypeOpen: false,
-            isEventTypeOpen: false,            
-
-            postType: '',
-            eventType: '',
-            title: '',
-            text: '',               
-
-            files: null,
-            previewList: [],
-            uploading: false,
-
+            isEventTypeOpen: false, 
+            uploading: false, 
+            files: null,   
+                               
+            
             editor: ClassicEditor,
             editorData: '',
             editorConfig: {
                 // The configuration of the editor.
-            }            
+            }             
         }
     },
     computed: {
+        loading() {
+            return this.$store.getters.getProcessing
+        },
         userId() {
             return this.$store.getters.userId
         },
@@ -166,27 +158,13 @@ export default {
         },
         postImageList() {
             return this.$store.getters.postImageList
-        }
+        }      
     },
     methods: {
-
-        async uploadImagesHandler() {
-            this.uploading = true
-            await this.$store.dispatch('uploadImages', this.files)
-        },     
-
-        convertSize(size) {
-            return bitesToSize(size)
-        },
-
-        removePreviewItem(name) { 
-            this.files = this.files.filter(file => file.name !== name)
-            this.previewList = this.previewList.filter(image => image.name !== name)
-        },
-
         onFileChange(event) {
+
             this.files = null
-            this.previewList = []
+            this.post.imageList = []
 
             if (!event.target.files) {
                 return
@@ -204,7 +182,8 @@ export default {
                             
                 reader.onload = ev => {
                     const url = ev.target.result
-                    this.previewList.push({
+
+                    this.post.imageList.push({
                         name: file.name,
                         size: file.size,
                         url: url
@@ -213,31 +192,48 @@ export default {
                 reader.readAsDataURL(file)
             })
 
-        },       
-
+        },      
         triggerUpload() {
-            this.$refs.fileInputCreate.click();
+            this.$refs.fileInputEdit.click();
         },
+        async uploadImagesHandler() {
+            this.uploading = true
+            await this.$store.dispatch('uploadImages', this.files)
+        },  
+
+        async removePreviewItem(imageName) { 
+            if (this.files) {
+                this.files = this.files.filter(file => file.name !== imageName)
+            }
+            this.post.imageList = this.post.imageList.filter(image => image.name !== imageName)
+
+            await this.$store.dispatch('deleteImages', imageName)
+            //this.$store.commit('UPDATE_POST_IMAGE_LIST', this.post.imageList)
+        },        
+
+        convertSize(size) {
+            return bitesToSize(size)
+        },        
         selectPostType(option) {
-            this.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
+            this.post.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
             this.isPostTypeOpen = false;
         },
         selectEventType(option) {
             switch (option) {
             case 'tracking':
-                this.eventType = 'Поход';
+                this.post.eventType = 'Поход';
                 break;
             case 'excursion':
-                this.eventType = 'Экскурсия';
+                this.post.eventType = 'Экскурсия';
                 break;
             case 'photosession':
-                this.eventType = 'Фотосессия';
+                this.post.eventType = 'Фотосессия';
                 break;
             case 'ural':
-                this.eventType = 'Поездка Урал';
+                this.post.eventType = 'Поездка Урал';
                 break;
             case 'crimea':
-                this.eventType = 'Поездка в Крым';
+                this.post.eventType = 'Поездка в Крым';
                 break;
             default:
                 alert('');
@@ -246,46 +242,39 @@ export default {
         },
         openPostTypeBlock() {
             this.isPostTypeOpen = !this.isPostTypeOpen
-            this.isEventTypeOpen = false
+            this.isEventTypeOpen = false            
         },
         openEventTypeBlock() {
             this.isEventTypeOpen = !this.isEventTypeOpen
-            this.isPostTypeOpen = false            
-        },
-
-        async savePost() {
+            this.isPostTypeOpen = false              
+        },        
+        async updatePost() {
             if (
-                this.postType === '' ||
-                this.eventType === '' ||
-                this.title === '' ||
-                this.text === ''
+                this.post.title === '' ||
+                this.post.text === ''
             ) {
                 alert('заполните поля!')
                 return
             }
-            if (this.previewList.length !== this.postImageList.length) {
+            if (this.post.imageList.length !== this.postImageList.length) {
                 alert('загрузите файлы!')
                 return
-            }
-
-            await this.$store.dispatch('savePost', {
-                postType: this.postType,
-                eventType: this.eventType,
-                title: this.title,
-                text: this.text,               
-                imageList: this.postImageList,                
-            });
-
-            //await this.$store.dispatch('uploadImages', this.files)
-
+            }            
+            this.$store.commit('SET_PROCESSING', true);
+            await this.$store.dispatch('updatePost', this.post);
+            this.$store.commit('SET_PROCESSING', false);            
             this.$emit('closeForm')
         },
-
         closeForm() {
-            this.$store.commit('ENABLE_UPLOAD_BUTTON', true)
             this.$emit('closeForm')
         }
-    } ,    
+    }, 
+    mounted() {
+        /*
+        this.post = this.postForEdit;
+        this.editorData = this.postForEdit.text;
+        */
+    }
 }
 </script>
 
@@ -300,7 +289,7 @@ export default {
     top: 0;
 }
 .form {
-    width: 900px;
+    width: 900px;  
     position: fixed;
     left: 50%;
     top: 50%; 
@@ -363,10 +352,6 @@ export default {
     li:hover {
         background-color: rgb(222, 222, 222);
     }
-}
-
-.ckeditor {
-    margin-bottom: 16px;
 }
 .preview-group {
     display: flex;
@@ -445,12 +430,15 @@ export default {
 .preview-item img {
     height: 100%;
 }
+.ckeditor {
+    margin-bottom: 16px;
+}
 .btn-block {
     display: flex;
     justify-content: space-between;
     @media (max-width: $mobile-max) {
         flex-direction: column;
-    }       
+    }      
 }
 .btn {
     font-size: 18px;
@@ -462,26 +450,16 @@ export default {
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.3);  
     border: 1px solid grey; 
     cursor: pointer; 
-    &:disabled {
-        background-color: rgb(214, 214, 214); 
-        cursor: default;                    
-    } 
     &__green {
         background-color: rgb(56, 146, 68);
         border: 1px solid white;
         color: white;
-        &:hover {
-            background-color: rgb(26, 103, 21);
-        } 
-        &:disabled {
-            background-color: rgb(214, 214, 214);            
-        }               
     }
     @media (max-width: $mobile-max) {
         font-size: 22px;
         padding: 14px 15px;
         margin-bottom: 16px;
-    }        
+    }     
 }
 
 </style>

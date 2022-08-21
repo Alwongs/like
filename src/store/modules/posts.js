@@ -1,5 +1,5 @@
 import { getDatabase, set, ref, child, get, update, remove } from "firebase/database"
-import sortList from '../../funcs/sort.js'
+import sortList from '../../functions/sort.js'
 
 export default {
 
@@ -28,9 +28,9 @@ export default {
     },
     actions: {
         async removePost({commit, dispatch}, id) {
+            commit('SET_PROCESSING', true);            
             const postId = id;
             const db = getDatabase();
-            commit('SET_PROCESSING', true);
             await remove(ref(db, `posts/${postId}`));
             await dispatch('getPostList');
             commit('SET_PROCESSING', false);
@@ -74,14 +74,14 @@ export default {
             });
         },    
  
-        async savePost({dispatch}, post) { 
-
+        async savePost({commit, dispatch}, post) { 
+            commit('SET_PROCESSING', true);
             const postId = Date.now();
             const db = getDatabase();
 
             await set(ref(db, `posts/${postId}`), post);
-            dispatch('getPostList');   
-            
+            dispatch('getPostList'); 
+            commit('SET_PROCESSING', false);            
         },
         
         async updatePost({commit}, post) {

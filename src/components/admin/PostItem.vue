@@ -28,10 +28,11 @@
         <footer class="post-footer">
             <button 
                 class="btn btn__blue"
-                @click="openForm(post)"
+                @click="openEditForm"
             >
                 Редактировать
             </button>
+            <div v-if="getProcessing">Deleting...</div>
             <button 
                 class="btn btn__red" 
                 @click="deletePost"
@@ -44,27 +45,32 @@
 
 <script>
 import moment from 'moment';
-import bitesToSize from '@/funcs/bitesToSize.js'
+import bitesToSize from '@/functions/bitesToSize.js'
 
 export default {
     name: 'PostItem',
     props: ['post'],
+    computed: {
+        getProcessing() {
+            return this.$store.getters.getProcessing
+        },         
+    },    
     methods: {
         convertSize(size) {
             return bitesToSize(size)
         },        
         async deletePost() {
-            if (confirm('Лена, ты хочешь удалить этот пост?   (°□°) ')) {
+            if (confirm('Лена, ты правда хочешь удалить этот пост???   (°□°) ')) {
                 if (this.post.imageList) {
                     this.post.imageList.forEach(image => {
-                        this.$store.dispatch('deleteImages', image.name)
+                        this.$store.dispatch('deleteImage', image.name)
                     });
                 }
                 await this.$store.dispatch('removePost', this.post.id)
             }
         },
-        openForm() {
-            this.$emit('openForm', this.post)
+        openEditForm() {
+            this.$emit('openEditForm')
         },
         getDate(time) {
             moment.locale('ru');

@@ -6,13 +6,13 @@
         </header>
         <main class="post-body">
             <p v-html="post.text" class="body"></p>
-
+            <p v-if="post.imageList" class="body link">
+                фото...
+            </p>
         </main>
         <footer class="post-footer">
             <p class="link">
-                <router-link :to="{name: 'post-page', params: {id: post.id}}">
-                    подробнее
-                </router-link>
+                подробнее
             </p>
         </footer>
     </li>
@@ -57,9 +57,12 @@ export default {
 .post-body { 
     height: 60px;
     overflow: hidden;
-    p {
+    .body {
         font-style: italic;
     }  
+    .body.link {
+        color: blue;
+    }
 }
 
 .title {
@@ -77,6 +80,10 @@ export default {
     p {
         padding: 0;
         line-height: 14px;
+    }
+    .link {
+        font-style: italic;
+        color: blue;
     }
 }
 .btn {
