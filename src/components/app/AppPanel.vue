@@ -1,31 +1,33 @@
 <template>
     <header class="app-header">
-        <div class="logo-block">
-            <router-link :to="'/'">
-                ЛАйК
-            </router-link>                         
-        </div>
-        <nav class="nav-wrap" :class="{active: isMenuOpen}">
-            <ul class="nav-block">
-                <li 
-                    v-for="item in menuItems"
-                    :key="item.route"
-                    class="nav-item"
-                    @click="goTo(item.route)"                    
-                >
-                    <router-link 
-                        :to="item.route"
+        <div class="nav-panel">
+            <div class="logo-block">
+                <router-link :to="'/'">
+                    ЛАйК
+                </router-link>                         
+            </div>
+            <nav class="nav-wrap" :class="{active: isMenuOpen}">
+                <ul class="nav-block">
+                    <li 
+                        v-for="item in menuItems"
+                        :key="item.route"
+                        class="nav-item"
+                        @click="goTo(item.route)"                    
                     >
-                        {{ item.title }}
-                    </router-link>
-                </li>
-            </ul>     
-        </nav>
-        <div 
-            class="menu-btn" 
-            :class="{opened: isMenuOpen}"
-            @click="toggleMenu"
-        ></div>
+                        <router-link 
+                            :to="item.route"
+                        >
+                            {{ item.title }}
+                        </router-link>
+                    </li>
+                </ul>     
+            </nav>
+            <div 
+                class="menu-btn" 
+                :class="{opened: isMenuOpen}"
+                @click="toggleMenu"
+            ></div>
+        </div>
     </header>
 </template>
 
@@ -112,20 +114,25 @@ export default {
 <style lang="scss" scoped>
 
 .app-header {
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgb(29, 71, 160);
+}
 
+.nav-panel {
     display: flex;
     align-content: center;
     justify-content: space-between;
     color: rgb(255, 225, 92);
     line-height: 64px;
-    padding: 0 64px;  
-    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
-        padding: 0 32px;
-    }       
+    padding: 0 32px;    
     @media (max-width: $mobile-max) {
-        font-size: 130%;
         padding: 0 16px;
-    } 
+        font-size: 22px;
+    }      
 }
 
 .nav-wrap {

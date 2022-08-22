@@ -1,5 +1,15 @@
 <template>
+        <create-post 
+            v-if="isCreateFormOpen"
+            @closeForm="isCreateFormOpen = false"
+        />
+        <edit-post 
+            v-if="isEditFormOpen"
+            :postForEdit="post"
+            @closeForm="isEditFormOpen = false"
+        /> 
     <div class="profile-page">
+          
         <header class="profile-header">
             <h1>Панель администратора</h1>
             <p>user-id: {{ userId }}</p>
@@ -27,16 +37,7 @@
             </ul>
             <p v-else>Список пуст..</p>
         </main>
-
-        <create-post 
-            v-if="isCreateFormOpen"
-            @closeForm="isCreateFormOpen = false"
-        />
-        <edit-post 
-            v-if="isEditFormOpen"
-            :postForEdit="post"
-            @closeForm="isEditFormOpen = false"
-        />                
+            
     </div>
 </template>
 

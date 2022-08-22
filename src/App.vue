@@ -1,10 +1,8 @@
 <template>
-    <div class="app-wrapper">
-        <app-panel class="flex-item" />
-        <div class="app-container">
-            <router-view/>
-        </div>
-        <app-footer class="flex-item" />
+    <app-panel />
+    <div class="app-container">
+        <router-view />
+        <app-footer />
     </div>
 </template>
 
@@ -23,26 +21,21 @@ export default {
 
 <style lang="scss" scoped>
 
-.app-wrapper {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
 .app-container {
-    flex: 1 1 auto;
-    width: 64vw;
+    background-color: #fff;  
+    width: 1400px;
     margin: 0 auto;
+    padding-top: 64px;
+    min-height: 100%;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
-        width: 75vw;
+        width: 900px;
     }     
     @media (min-width: $tablet-min) and (max-width: $tablet-max) {
-        width: 90vw;
+        width: 670px;
     }      
     @media (max-width: $mobile-max) {
         width: 100%;
+        background-color: rgb(29, 71, 160);;        
     } 
-}
-.flex-item {
-    flex: 0 0 64px;
 }
 </style>

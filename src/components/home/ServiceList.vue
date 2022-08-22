@@ -66,7 +66,7 @@ export default {
     justify-content: space-around;
     @media (max-width: $mobile-max) {
         flex-direction: column;
-        padding: 32px;
+        padding: 16px;
     } 
 }
 .service-item {   

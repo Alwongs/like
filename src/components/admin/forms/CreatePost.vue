@@ -1,36 +1,39 @@
 <template>
-    <div class="create-post">
-        <header class="header">
-            <h1 class="header__title">Загрузка файлов</h1>
-        </header>
+    <div class="modal-wrap">
+        <div class="create-post">
+            <header class="header">
+                <h1 class="header__title">Загрузка файлов</h1>
+            </header>
 
-        <form action="#" class="form">
-            <div class="input-block">
-                <input v-model="postType" type="text" placeholder="тип поста">
-            </div>
-            <div class="input-block">
-                <input v-model="eventType" type="text" placeholder="тип события">
-            </div>
-            <div class="input-block">
-                <input v-model="title" type="text" placeholder="заголовок">
-            </div>
-            <div class="input-block">
-                <textarea v-model="text" name="" id="" cols="30" rows="10" placeholder="введите текст"></textarea>
-            </div>
-        </form>
+            <form action="#" class="form">
+                <div class="input-block">
+                    <input v-model="postType" type="text" placeholder="тип поста">
+                </div>
+                <div class="input-block">
+                    <input v-model="eventType" type="text" placeholder="тип события">
+                </div>
+                <div class="input-block">
+                    <input v-model="title" type="text" placeholder="заголовок">
+                </div>
+                <div class="input-block">
+                    <textarea v-model="text" name="" id="" cols="30" rows="10" placeholder="введите текст"></textarea>
+                </div>
+            </form>
 
-        <select-files-btn @onReadFiles="readFiles" />
-        <images-upload 
-            :previewList="previewList"
-            class="image-block" 
-        />
+            <select-files-btn @onReadFiles="readFiles" />
+            <images-upload 
+                :previewList="previewList"
+                class="image-block" 
+            />
 
-        <h1 v-if="getProcessing">Loading...</h1>
-        <div class="btn-block">
-            <button class="btn mr-16" @click="$emit('closeForm')">Закрыть</button>
-            <button class="btn btn-submit" type="submit" @click.prevent="savePost">Сохранить</button>
-        </div>
+            <h1 v-if="getProcessing">Loading...</h1>
+            <div class="btn-block">
+                <button class="btn mr-16" @click="$emit('closeForm')">Закрыть</button>
+                <button class="btn btn-submit" type="submit" @click.prevent="savePost">Сохранить</button>
+            </div>
+        </div>   
     </div>
+
 </template>
 
 <script>
@@ -87,12 +90,16 @@ export default {
 
 <style lang="scss" scoped>
 
+.modal-wrap {
+    height: 100vh;
+    position: relative;
+}
 .create-post {
     position: absolute;
     left: 0;
-    right: 0;
     top: 0;
-    bottom: 0;
+    width: 400px;
+    height: 400px;
     background-color: rgb(173, 196, 169);
     padding: 0 32px;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {

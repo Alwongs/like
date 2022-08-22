@@ -1,9 +1,12 @@
 <template> 
     <main class="main">
-        <service-list class="service-list-block" />
+        <div class="main-image-block">
+            <img :src="require('@/assets/img/jpg/bg_image.jpg')" alt="главное фото">
+            <service-list class="service-list-block" />
+        </div>
 
         <post-list class="post-list-block"/>
-    </main>    
+    </main>   
 </template>
 
 <script>
@@ -24,15 +27,24 @@ export default {
 
 <style lang="scss" scoped>
 
-.main {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;  
-    color: white; 
+.main-image-block {
+    position: relative;
+    img {
+        width: 100%;
+        @media (max-width: $mobile-max) {
+            display: none;
+        }          
+    }
 }
 .service-list-block {
-    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding-top: 32px;
+    @media (max-width: $mobile-max) {
+        position: static;
+    }      
 }
 
 .post-list-block {
