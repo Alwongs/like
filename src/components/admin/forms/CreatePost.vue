@@ -1,42 +1,72 @@
 <template>
-    <div class="modal-wrap">
-        <div class="create-post">
-            <header class="header">
-                <h1 class="header__title">Загрузка файлов</h1>
-            </header>
+    <div class="create-post">
+        <form action="#" class="form">
+            <h2 class="form-title">Новый пост</h2>            
+            <ul class="form-element-list">
+                <li class="form-item select-type-input">
+                    <input 
+                        v-model="postType" 
+                        class="title" 
+                        placeholder="Выберете тип поста.."
+                        readonly
+                        required
+                        @click="openPostTypeBlock"                    
+                    >
+                    <ul v-if="isPostTypeOpen" class="select-type-block">
+                        <li @click="selectPostType('announce')">Анонс</li>
+                        <li @click="selectPostType('post')">Отчёт</li>
+                    </ul> 
+                </li>
 
-            <form action="#" class="form">
-                <div class="input-block">
-                    <input v-model="postType" type="text" placeholder="тип поста">
-                </div>
-                <div class="input-block">
-                    <input v-model="eventType" type="text" placeholder="тип события">
-                </div>
-                <div class="input-block">
+                <li class="form-item select-type-input">
+                    <input 
+                        v-model="eventType" 
+                        class="title" 
+                        placeholder="Выберете тип события.."
+                        readonly
+                        @click="openEventTypeBlock"                      
+                    >
+                    <ul v-if="isEventTypeOpen" class="select-type-block">
+                        <li @click="selectEventType('tracking')">Поход</li>
+                        <li @click="selectEventType('excursion')">Экскурсия</li>
+                        <li @click="selectEventType('photosession')">Фотосессия</li>
+                        <li @click="selectEventType('ural')">Поездка Урал</li>
+                        <li @click="selectEventType('crimea')">Поездка в Крым</li>
+                    </ul> 
+                </li>
+
+                <li class="form-item mb-32">
                     <input v-model="title" type="text" placeholder="заголовок">
-                </div>
-                <div class="input-block">
-                    <textarea v-model="text" name="" id="" cols="30" rows="10" placeholder="введите текст"></textarea>
-                </div>
-            </form>
+                </li>
+                <li class="form-item ckeditor">
+                    <p>Введите текст</p>
+                    <ckeditor 
+                        id="createCkeditor"
+                        v-model="text"
+                        :editor="editor"  
+                        :config="editorConfig"              
+                        class="ckeditor"                    
+                    ></ckeditor>
+                </li>
+            </ul>
+        </form>
 
-            <select-files-btn @onReadFiles="readFiles" />
-            <images-upload 
-                :previewList="previewList"
-                class="image-block" 
-            />
+        <select-files-btn @onReadFiles="readFiles" />
+        <images-upload 
+            :previewList="previewList"
+            class="image-block" 
+        />
 
-            <h1 v-if="getProcessing">Loading...</h1>
-            <div class="btn-block">
-                <button class="btn mr-16" @click="$emit('closeForm')">Закрыть</button>
-                <button class="btn btn-submit" type="submit" @click.prevent="savePost">Сохранить</button>
-            </div>
-        </div>   
-    </div>
-
+        <h1 v-if="getProcessing">Loading...</h1>
+        <div class="btn-block">
+            <button class="btn mr-16" @click="$emit('closeForm')">Закрыть</button>
+            <button class="btn btn-submit" type="submit" @click.prevent="savePost">Сохранить</button>
+        </div>
+    </div>   
 </template>
 
 <script>
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import SelectFilesBtn from '@/components/admin/forms/SelectFilesBtn.vue'
 import ImagesUpload from '@/components/admin/forms/ImagesUpload.vue'
 import uploadFilesMixin from '@/mixins/uploadFiles.mixin.js'
@@ -50,10 +80,19 @@ export default {
     mixins: [uploadFilesMixin],
     data() {
         return {
+            isPostTypeOpen: false,
+            isEventTypeOpen: false, 
+
             postType: '',
             eventType: '',
             title: '',
-            text: ''
+            text: '',
+
+            editor: ClassicEditor,
+            editorData: '',
+            editorConfig: {
+                // The configuration of the editor.
+            }              
         }
     },
     computed: {
@@ -65,6 +104,42 @@ export default {
         }
     }, 
     methods: {
+        selectPostType(option) {
+            this.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
+            this.isPostTypeOpen = false;
+        },
+        selectEventType(option) {
+            switch (option) {
+            case 'tracking':
+                this.eventType = 'Поход';
+                break;
+            case 'excursion':
+                this.eventType = 'Экскурсия';
+                break;
+            case 'photosession':
+                this.eventType = 'Фотосессия';
+                break;
+            case 'ural':
+                this.eventType = 'Поездка Урал';
+                break;
+            case 'crimea':
+                this.eventType = 'Поездка в Крым';
+                break;
+            default:
+                alert('');
+            }
+            this.isEventTypeOpen = false;            
+        },
+        openPostTypeBlock() {
+            this.isPostTypeOpen = !this.isPostTypeOpen
+            this.isEventTypeOpen = false
+        },
+        openEventTypeBlock() {
+            this.isEventTypeOpen = !this.isEventTypeOpen
+            this.isPostTypeOpen = false            
+        },
+
+
         async savePost() {
             if (
                 this.postType === '' ||
@@ -90,39 +165,68 @@ export default {
 
 <style lang="scss" scoped>
 
-.modal-wrap {
-    height: 100vh;
-    position: relative;
-}
 .create-post {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 400px;
-    height: 400px;
-    background-color: rgb(173, 196, 169);
-    padding: 0 32px;
+    //background-color: rgb(173, 196, 169);
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
-        width: 900px;  
+        width: 100%; 
     }     
     @media (min-width: $tablet-min) and (max-width: $tablet-max) {
-        width: 700px;
+        width: 100%; 
     }     
     @media (max-width: $mobile-max) {
-        width: 100%;
+        width: 100%; 
     } 
 }
-.header {
-    padding: 16px 0; 
-    margin-bottom: 16px;  
-    &__title {
-        text-align: center;
+.form-title {
+    font-size: 24px;
+}
+.form-item > input {
+    font-size: 14px;     
+    width: 100%;
+    height: 40px;
+    margin-bottom: 16px;
+    padding-left: 8px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid grey;
+    @media (max-width: $mobile-max) {
+        font-size: 22px;        
+        min-height: 50px;
+    }     
+}
+.select-type-input {
+    position: relative;
+}
+.select-type-block {
+    z-index: 1;
+    font-size: 22px;      
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #fff;
+    width: 100%;
+    border-radius: 5px 5px 10px 10px;
+    padding: 10px 0;
+    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.332);
+    li {
+        vertical-align: center;
+        padding-left: 20px;
+        height: 40px;
+        line-height: 40px;
+        cursor: pointer;
+    }
+    li:hover {
+        background-color: rgb(222, 222, 222);
     }
 }
 
-.input-block {
-    margin-bottom: 8px;
-}
+
+
+
+
+
+
+
 .image-block {
     margin-bottom: 16px;
 }

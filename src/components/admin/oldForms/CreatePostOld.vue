@@ -174,16 +174,13 @@ export default {
             this.uploading = true
             await this.$store.dispatch('uploadImages', this.files)
         },     
-
         convertSize(size) {
             return bitesToSize(size)
         },
-
         removePreviewItem(name) { 
             this.files = this.files.filter(file => file.name !== name)
             this.previewList = this.previewList.filter(image => image.name !== name)
         },
-
         onFileChange(event) {
             this.files = null
             this.previewList = []
@@ -214,10 +211,10 @@ export default {
             })
 
         },       
-
         triggerUpload() {
             this.$refs.fileInputCreate.click();
         },
+        
         selectPostType(option) {
             this.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
             this.isPostTypeOpen = false;

@@ -19,11 +19,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .app-container {
     background-color: #fff;  
-    width: 1400px;
+    width: 1200px;
     margin: 0 auto;
     padding-top: 64px;
     min-height: 100%;
@@ -31,7 +31,7 @@ export default {
         width: 900px;
     }     
     @media (min-width: $tablet-min) and (max-width: $tablet-max) {
-        width: 670px;
+        width: 100%;
     }      
     @media (max-width: $mobile-max) {
         width: 100%;

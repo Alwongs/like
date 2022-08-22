@@ -1,14 +1,6 @@
 <template>
-        <create-post 
-            v-if="isCreateFormOpen"
-            @closeForm="isCreateFormOpen = false"
-        />
-        <edit-post 
-            v-if="isEditFormOpen"
-            :postForEdit="post"
-            @closeForm="isEditFormOpen = false"
-        /> 
-    <div class="profile-page">
+
+    <div :class="{ 'overflow-hidden': isCreateFormOpen }" class="profile-page">
           
         <header class="profile-header">
             <h1>Панель администратора</h1>
@@ -16,7 +8,17 @@
             <hr>
         </header>
 
-        <main class="profile-main">
+        <create-post 
+            v-if="isCreateFormOpen"
+            @closeForm="closeCreateForm"
+        />
+        <edit-post 
+            v-if="isEditFormOpen"
+            :postForEdit="post"
+            @closeForm="closeEditForm"
+        /> 
+
+        <main v-if="!isAnyFormOpen" class="profile-main">
             <button 
                 v-if="!isCreateFormOpen" 
                 class="btn-opener"
@@ -58,9 +60,17 @@ export default {
             isCreateFormOpen: false,
             isEditFormOpen: false,
             post: {},
+            //tegBody: document.querySelector('#app')
         }
     },
     computed: {
+        isAnyFormOpen() {
+            if (this.isCreateFormOpen || this.isEditFormOpen) {
+                return true
+            } else {
+                return false
+            }
+        },
         userId() {
             return this.$store.getters.userId;
         },
@@ -70,19 +80,20 @@ export default {
     },
     methods: {
         openCreateForm() {
+            //this.tegBody.style.overflow = 'hidden'
             this.isCreateFormOpen = true;
         },
-        closeCreateForm() {
+        closeCreateForm() {  
+            //this.tegBody.style.overflow = 'visible'
             this.isCreateFormOpen = false;            
         },
 
         openEditForm(post) {
-            console.log(post.imageList)
             this.$store.commit('UPDATE_POST_IMAGE_LIST', post.imageList || [])
             this.post = post
             this.isEditFormOpen = true;
         },
-        closeEditForm() {
+        closeEditForm() {          
             this.isEditFormOpen = false;            
         },
     } ,
@@ -95,7 +106,6 @@ export default {
 <style lang="scss" scoped>
 
 .profile-page {
-    position: relative;
     background-color: #fff;
     border-radius: 10px;
     width: 100%;
@@ -106,6 +116,7 @@ export default {
         padding: 16px;
     } 
 }
+
 .profile-header {
     margin-bottom: 32px;
 }

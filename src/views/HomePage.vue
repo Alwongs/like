@@ -1,7 +1,7 @@
 <template> 
     <main class="main">
         <div class="main-image-block">
-            <img :src="require('@/assets/img/jpg/bg_image.jpg')" alt="главное фото">
+            <img :src="require('@/assets/img/jpg/main_image.jpg')" alt="главное фото">
             <service-list class="service-list-block" />
         </div>
 

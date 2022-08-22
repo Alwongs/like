@@ -1,22 +1,53 @@
 <template>
     <div class="edit-post">
-        <header class="header">
-            <h1 class="header__title">Загрузка файлов</h1>
-        </header>
-
         <form action="#" class="form">
-            <div class="input-block">
-                <input v-model="post.postType" type="text" placeholder="тип поста">
-            </div>
-            <div class="input-block">
-                <input v-model="post.eventType" type="text" placeholder="тип события">
-            </div>
-            <div class="input-block">
-                <input v-model="post.title" type="text" placeholder="заголовок">
-            </div>
-            <div class="input-block">
-                <textarea v-model="post.text" name="" id="" cols="30" rows="10" placeholder="введите текст"></textarea>
-            </div>
+            <p v-if="loading" class="loading">Обновление поста...</p>
+
+            <h2 class="form-title">Редактирование</h2>            
+            <ul class="form-element-list">            
+                <li class="form-item select-type-input">
+                    <input 
+                        v-model="post.postType" 
+                        class="title" 
+                        placeholder="тип поста.. (анонс, отчёт..)"
+                        readonly
+                        @click="openPostTypeBlock"                       
+                    >
+                    <ul v-if="isPostTypeOpen" class="select-type-block">
+                        <li @click="selectPostType('announce')">Анонс</li>
+                        <li @click="selectPostType('post')">Отчёт</li>
+                    </ul> 
+                </li>
+
+                <li class="form-item select-type-input">
+                    <input 
+                        v-model="post.eventType" 
+                        class="title" 
+                        placeholder="тип события.. (экскурсия, поход, фотосессия..)"
+                        readonly
+                        @click="openEventTypeBlock"  
+                    >
+                    <ul v-if="isEventTypeOpen" class="select-type-block">
+                        <li @click="selectEventType('tracking')">Поход</li>
+                        <li @click="selectEventType('excursion')">Экскурсия</li>
+                        <li @click="selectEventType('photosession')">Фотосессия</li>
+                        <li @click="selectEventType('ural')">Поездка Урал</li>
+                        <li @click="selectEventType('crimea')">Поездка в Крым</li>
+                    </ul> 
+                </li>
+
+                <li class="form-item">
+                    <input v-model="post.title" type="text" placeholder="заголовок">
+                </li>
+                <li class="form-item ckeditor">
+                    <ckeditor 
+                        v-model="post.text"
+                        :editor="editor"  
+                        :config="editorConfig"              
+                        class="ckeditor"                    
+                    ></ckeditor>
+                </li>
+            </ul>
         </form>
 
         <select-files-btn @onReadFiles="readFiles" />
@@ -28,13 +59,14 @@
 
         <h1 v-if="getProcessing">Loading...</h1>
         <div class="btn-block">
-            <button class="btn mr-16" @click="$emit('closeForm')">Закрыть</button>
+            <button class="btn mr-16" @click="closeFormHandler">Закрыть</button>
             <button class="btn btn-submit" type="submit" @click.prevent="updatePost">Сохранить</button>
         </div>
     </div>
 </template>
 
 <script>
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import SelectFilesBtn from '@/components/admin/forms/SelectFilesBtn.vue'
 import ImagesUpload from '@/components/admin/forms/ImagesUpload.vue'
 import uploadFilesMixin from '@/mixins/uploadFiles.mixin.js'
@@ -49,10 +81,23 @@ export default {
     mixins: [uploadFilesMixin],
     data() {
         return {
-            post: this.postForEdit
+            isPostTypeOpen: false,
+            isEventTypeOpen: false, 
+            uploading: false,
+
+            post: this.postForEdit,            
+
+            editor: ClassicEditor,
+            editorData: '',
+            editorConfig: {
+                // The configuration of the editor.
+            }             
         }
     },
     computed: {
+        loading() {
+            return this.$store.getters.getProcessing
+        },
         getProcessing() {
             return this.$store.getters.getProcessing
         },         
@@ -61,6 +106,47 @@ export default {
         },
     }, 
     methods: {
+        selectPostType(option) {
+            this.post.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
+            this.isPostTypeOpen = false;
+        },
+        selectEventType(option) {
+            switch (option) {
+            case 'tracking':
+                this.post.eventType = 'Поход';
+                break;
+            case 'excursion':
+                this.post.eventType = 'Экскурсия';
+                break;
+            case 'photosession':
+                this.post.eventType = 'Фотосессия';
+                break;
+            case 'ural':
+                this.post.eventType = 'Поездка Урал';
+                break;
+            case 'crimea':
+                this.post.eventType = 'Поездка в Крым';
+                break;
+            default:
+                alert('');
+            }
+            this.isEventTypeOpen = false;            
+        },
+        openPostTypeBlock() {
+            this.isPostTypeOpen = !this.isPostTypeOpen
+            this.isEventTypeOpen = false            
+        },
+        openEventTypeBlock() {
+            this.isEventTypeOpen = !this.isEventTypeOpen
+            this.isPostTypeOpen = false              
+        }, 
+
+
+
+        closeFormHandler() {
+            this.$store.commit('UPDATE_POST_IMAGE_LIST', [])  
+            this.$emit('closeForm')
+        },
         async updatePost() {
 
             this.post.imageList = this.postImageList
@@ -74,47 +160,74 @@ export default {
             this.$store.commit('SET_PROCESSING', true);
             await this.$store.dispatch('updatePost', this.post);
             this.$store.commit('SET_PROCESSING', false);            
-
+            this.$emit('closeForm')
         },        
-    } ,
-
-    mounted() {
-
-    }    
+    } ,  
 }
 </script>
 
 <style lang="scss" scoped>
 
-.edit-post {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;    
-    background-color: rgb(173, 196, 169);
-    padding: 0 32px;
+.edit-post { 
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
-        width: 900px;  
+        width: 100%;  
     }     
     @media (min-width: $tablet-min) and (max-width: $tablet-max) {
-        width: 700px;
+        width: 100%;
     }     
     @media (max-width: $mobile-max) {
         width: 100%;
     } 
 }
-.header {
-    padding: 16px 0; 
-    margin-bottom: 16px;  
-    &__title {
-        text-align: center;
+
+.form-title {
+    font-size: 24px;
+}
+.form-item > input {
+    font-size: 14px;     
+    width: 100%;
+    height: 40px;
+    margin-bottom: 16px;
+    padding-left: 8px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid grey;
+    @media (max-width: $mobile-max) {
+        font-size: 22px;        
+        min-height: 50px;
+    }     
+}
+.select-type-input {
+    position: relative;
+}
+.select-type-block {
+    z-index: 1;
+    font-size: 22px;      
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background-color: #fff;
+    width: 100%;
+    border-radius: 5px 5px 10px 10px;
+    padding: 10px 0;
+    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.332);
+    li {
+        vertical-align: center;
+        padding-left: 20px;
+        height: 40px;
+        line-height: 40px;
+        cursor: pointer;
+    }
+    li:hover {
+        background-color: rgb(222, 222, 222);
     }
 }
 
-.input-block {
-    margin-bottom: 8px;
-}
+
+
+
+
+
 .image-block {
     margin-bottom: 16px;
 }

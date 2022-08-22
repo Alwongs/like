@@ -213,7 +213,8 @@ export default {
 
         convertSize(size) {
             return bitesToSize(size)
-        },        
+        }, 
+
         selectPostType(option) {
             this.post.postType = (option === 'announce') ? 'Aнонс' : 'Отчёт';
             this.isPostTypeOpen = false;
@@ -247,7 +248,8 @@ export default {
         openEventTypeBlock() {
             this.isEventTypeOpen = !this.isEventTypeOpen
             this.isPostTypeOpen = false              
-        },        
+        }, 
+               
         async updatePost() {
             if (
                 this.post.title === '' ||
