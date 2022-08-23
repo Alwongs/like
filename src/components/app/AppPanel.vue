@@ -1,5 +1,5 @@
 <template>
-    <header class="app-header">
+    <header class="app-panel">
         <div class="nav-panel">
             <div class="logo-block">
                 <router-link :to="'/'">
@@ -113,13 +113,14 @@ export default {
 
 <style lang="scss" scoped>
 
-.app-header {
-    position: fixed;
+.app-panel {
+    position: sticky;
     z-index: 3;
     width: 100%;
     left: 0;
     top: 0;
-    background-color: rgb(29, 71, 160);
+    background-color: rgb(39, 68, 129);
+    box-shadow: 0 2px 2px 0 rgba(10, 13, 61, 0.4);
 }
 
 .nav-panel {
@@ -138,16 +139,16 @@ export default {
 .nav-wrap {
     @media (max-width: $mobile-max) {
         z-index: 1;
-        background-color: rgb(43, 135, 239);
+        background-color: rgb(38, 115, 204);
         width: 100%;
         //height: 100%;
-        position: fixed;
+        position: absolute;
         left: 0;
         padding: 32px;
         transition: 0.4s;
         transform: translateY(-100%);  
         &.active {
-            transform: translateX(0%);
+            transform: translateY(0%);
         }              
     }     
 }

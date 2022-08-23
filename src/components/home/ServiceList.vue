@@ -66,7 +66,7 @@ export default {
     justify-content: space-around;
     @media (max-width: $mobile-max) {
         flex-direction: column;
-        padding: 16px;
+        padding: 64px;
     } 
 }
 .service-item {   
@@ -78,7 +78,7 @@ export default {
     }
     @media (max-width: $mobile-max) {
         width: 100%;
-        margin-bottom: 16px;
+        margin-bottom: 32px;
     }      
 }
 .service-item:hover {

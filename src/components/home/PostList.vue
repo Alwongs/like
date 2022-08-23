@@ -1,6 +1,7 @@
 <template>
-    <div class="wrapper">
-        <p v-if="loading" class="loading">Загрузка...</p>
+    <p v-if="loading" class="loading">Загрузка...</p>
+    <div v-else class="wrapper">
+        <h2 class="text-center">Последние отчёты</h2>
         <ul 
             v-if="limitedPostList" 
             class="post-list"
@@ -58,16 +59,36 @@ export default {
 
 <style lang="scss" scoped>
 
+.loading {
+    padding-top: 64px;
+    text-align: center;
+}
+
 .wrapper {
+    background-color: rgb(236, 236, 236);
     padding: 64px;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        padding: 64px;
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        padding: 32px;
+    }      
+    @media (max-width: $mobile-max) {
+        padding: 32px 0;      
+    }     
 }
 .post-item-block {
-    height: 150px;
+    height: 200px;
     margin-bottom: 32px;
 }
 .look-more-link {
-    color: white;
+    color: $link;
+    font-style: italic;
     text-align: center;
     cursor: pointer;
+    @media (max-width: $mobile-max) {
+        font-size: 18px;
+        padding-left: 16px;
+    }     
 }
 </style>

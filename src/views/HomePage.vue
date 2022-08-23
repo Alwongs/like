@@ -1,10 +1,12 @@
 <template> 
     <main class="main">
         <div class="main-image-block">
-            <img :src="require('@/assets/img/jpg/main_image.jpg')" alt="главное фото">
+            <img 
+                :src="require('@/assets/img/jpg/main_image.jpg')" 
+                alt="главное фото"
+            >
             <service-list class="service-list-block" />
         </div>
-
         <post-list class="post-list-block"/>
     </main>   
 </template>
@@ -15,6 +17,7 @@ import PostList from '@/components/home/PostList.vue'
 
 export default {
     name: 'Home',
+
     components: { 
         ServiceList,
         PostList 
@@ -26,6 +29,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.main {
+    min-height: 100vh;
+}
 
 .main-image-block {
     position: relative;
@@ -49,7 +56,7 @@ export default {
 
 .post-list-block {
     @media (max-width: $mobile-max) {
-        display: none;
+        //display: none;
     }     
 }
 </style>

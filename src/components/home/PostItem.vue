@@ -10,13 +10,13 @@
 
 
         <div class="text-block">
-            <header class="border-red">
+            <header>
                 <h3>{{ post.title }}</h3>
             </header>
-            <main class="border-red">
+            <main>
                 <p v-html="post.text" class="body"></p>
             </main>
-            <footer class="border-red">
+            <footer>
                 подробнее
             </footer>
         </div>
@@ -49,11 +49,13 @@ export default {
     padding: 15px;
     color: rgb(76, 76, 82);
     cursor: pointer;   
-    border-bottom: 1px solid grey;
+    //border: 1px solid grey;
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
 }
 .image-block {
+    background-color: rgb(225, 225, 225);
     height: 100%;
-    width: 40%;
+    width: 30%;
     overflow: hidden;
     text-align: center;
     img {
@@ -65,11 +67,23 @@ export default {
     display: flex;
     flex-direction: column;
     padding-left: 8px;
-    width: 60%;
+    width: 70%;
     height: 100%;
+}
+header {
+    font-size: 16px;
 }
 main {
     overflow: hidden;
+    flex-grow: 1;
+    font-size: 14px;
+    padding: 8px;
+}
+footer {
+    text-align: end;
+    font-size: 14px;
+    font-style: italic;
+    color: $link;
 }
 
 </style>

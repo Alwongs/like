@@ -20,14 +20,10 @@
     border: 2px solid white;    
 }
 html, body {
-
     background-color: rgb(222, 230, 238);
-    background-size: cover;
     height: 100%;
     font-size: 20px;
-    @media (max-width: $mobile-max) {
-        background-image: none;
-        background-color: rgb(43, 135, 239);       
+    @media (max-width: $mobile-max) {      
         font-size: 12px;
     }    
             /*типа запрет ротации моб устройства
@@ -72,18 +68,7 @@ ul {
     margin: 0;
     padding: 0;
 }
-/*
-button {
-    padding: 0;
-    width: 0;
-    height: 0;
-    border: none;
-    font: inherit;
-    color: inherit;
-    background-color: transparent;
-    cursor: pointer;
-}
-*/
+
 p {
     line-height: 20px;
     margin-bottom: 16px; 

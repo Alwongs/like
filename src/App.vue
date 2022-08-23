@@ -1,7 +1,9 @@
 <template>
-    <app-panel />
     <div class="app-container">
-        <router-view />
+        <app-panel /> 
+        <div class="page-wrap">
+            <router-view />
+        </div>       
         <app-footer />
     </div>
 </template>
@@ -22,10 +24,10 @@ export default {
 <style lang="scss">
 
 .app-container {
+    position: relative;
     background-color: #fff;  
     width: 1200px;
     margin: 0 auto;
-    padding-top: 64px;
     min-height: 100%;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
         width: 900px;
@@ -35,7 +37,10 @@ export default {
     }      
     @media (max-width: $mobile-max) {
         width: 100%;
-        background-color: rgb(29, 71, 160);;        
+        background-color: rgb(142, 158, 194);     
     } 
+}
+.page-wrap {
+    min-height: 100vh;
 }
 </style>
