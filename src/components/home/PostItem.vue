@@ -1,20 +1,25 @@
 <template>
     <li class="post-item">
-        <header class="post-header">
-            <div class="left"><h3>{{ post.title }}</h3></div>
-            <div class="right">{{ getDate(post.id) }}</div>
-        </header>
-        <main class="post-body">
-            <p v-html="post.text" class="body"></p>
-            <p v-if="post.imageList" class="body link">
-                фото...
-            </p>
-        </main>
-        <footer class="post-footer">
-            <p class="link">
+        <div class="image-block">
+            <img 
+                v-if="post.imageList"
+                :src="post.imageList[0].url" 
+                :alt="post.imageList[0].name"
+            >
+        </div>
+
+
+        <div class="text-block">
+            <header class="border-red">
+                <h3>{{ post.title }}</h3>
+            </header>
+            <main class="border-red">
+                <p v-html="post.text" class="body"></p>
+            </main>
+            <footer class="border-red">
                 подробнее
-            </p>
-        </footer>
+            </footer>
+        </div>
     </li>
 </template>
 
@@ -37,67 +42,34 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.post-item {
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px 15px;
-    color: rgb(76, 76, 82);
-    cursor: pointer;
-    &:hover {
-        background-color: rgb(228, 228, 209);      
-    }    
-}
-.post-header {
-    display: flex;
-    justify-content: space-between;
-    min-height: 30px;
-    .right {
-        font-size: 12px;
-    }
-}
-.post-body { 
-    height: 60px;
-    overflow: hidden;
-    .body {
-        font-style: italic;
-    }  
-    .body.link {
-        color: blue;
-    }
-}
 
-.title {
-    font-size: 18px;    
-    text-align: center;
-    margin-bottom: 8px;
-}
-.body {
-    font-size: 14px;
-}
-.post-footer {
+.post-item {
     display: flex;
-    justify-content: flex-end;
-    font-size: 14px; 
-    p {
-        padding: 0;
-        line-height: 14px;
-    }
-    .link {
-        font-style: italic;
-        color: blue;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 15px;
+    color: rgb(76, 76, 82);
+    cursor: pointer;   
+    border-bottom: 1px solid grey;
+}
+.image-block {
+    height: 100%;
+    width: 40%;
+    overflow: hidden;
+    text-align: center;
+    img {
+        width: auto;
+        height: 100%;
     }
 }
-.btn {
-    padding: 5px 10px;
-    cursor: pointer;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    &__blue {
-        background-color: blue;
-    }
-    &__red {
-        background-color: red;        
-    }
+.text-block {
+    display: flex;
+    flex-direction: column;
+    padding-left: 8px;
+    width: 60%;
+    height: 100%;
+}
+main {
+    overflow: hidden;
 }
 
 </style>

@@ -135,4 +135,15 @@ p {
     cursor: pointer;
 }
 
-
+.app-page {
+    padding: 64px;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        padding: 64px;
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        padding: 32px;
+    }      
+    @media (max-width: $mobile-max) {
+        padding: 16px;
+    } 
+}

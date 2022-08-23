@@ -115,7 +115,7 @@ export default {
 
 .app-header {
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     width: 100%;
     left: 0;
     top: 0;

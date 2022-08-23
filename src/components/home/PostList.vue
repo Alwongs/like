@@ -62,10 +62,8 @@ export default {
     padding: 64px;
 }
 .post-item-block {
-    height: 120px;
-    margin-bottom: 48px;
-    border-radius: 15px;
-    box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);
+    height: 150px;
+    margin-bottom: 32px;
 }
 .look-more-link {
     color: white;

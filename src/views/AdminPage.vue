@@ -1,7 +1,5 @@
 <template>
-
-    <div :class="{ 'overflow-hidden': isCreateFormOpen }" class="profile-page">
-          
+    <div class="app-page">   
         <header class="profile-header">
             <h1>Панель администратора</h1>
             <p>user-id: {{ userId }}</p>
@@ -39,7 +37,6 @@
             </ul>
             <p v-else>Список пуст..</p>
         </main>
-            
     </div>
 </template>
 
@@ -104,18 +101,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-.profile-page {
-    background-color: #fff;
-    border-radius: 10px;
-    width: 100%;
-    height: 100%;
-    padding: 64px;
-    @media (max-width: $mobile-max) {
-        border-radius: 0;        
-        padding: 16px;
-    } 
-}
 
 .profile-header {
     margin-bottom: 32px;
