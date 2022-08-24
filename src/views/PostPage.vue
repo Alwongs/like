@@ -1,7 +1,17 @@
 <template>
     <div class="app-page">
         <p v-if="loading" class="loading">Загрузка...</p>
+
         <h1>{{ post.title }}</h1>
+
+        <div class="main-img-block">
+            <img 
+                :src="post.imageList[0].url" 
+                :alt="post.imageList[0].name"
+            >
+        </div>     
+
+        <p v-html="post.text"></p>
         <ul class="image-list">
             <li               
                 v-for="image in post.imageList"
@@ -12,8 +22,7 @@
                     <img :src="image.url" :alt="image.name">
                 </div>
             </li>
-        </ul>            
-        <p v-html="post.text"></p>
+        </ul>         
         <p class="link">
             <a href="#" @click.prevent="$router.go(-1)">
                 назад
@@ -46,6 +55,13 @@ export default {
 
 <style lang="scss" scoped>
 
+.main-img-block {
+    text-align: center;
+    margin-bottom: 16px;
+    img {
+        width: 300px;
+    }
+}
 .img-block {
     height: 200px;
     margin-bottom: 16px;

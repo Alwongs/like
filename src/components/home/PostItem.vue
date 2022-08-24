@@ -90,7 +90,7 @@ header {
 main {
     overflow: hidden;
     flex-grow: 1;
-    font-size: 14px;
+    font-size: 16px;
     padding: 8px;
 }
 footer {

@@ -1,6 +1,7 @@
 <template>
     <div class="app-page">
         <p v-if="loading" class="loading">Загрузка...</p>
+        <h1>История событий</h1>
         <ul 
             v-if="postList" 
             class="post-list"
@@ -10,6 +11,7 @@
                 :key="post.id"
                 :post="post"
                 class="post-item-block"
+                @click="goToItem(post.id)"                 
             />
         </ul> 
     </div>
@@ -34,6 +36,12 @@ export default {
             return this.$store.getters.postList;
         },
     },
+    methods: {
+        goToItem(id) {
+            this.$store.commit('UPDATE_POST', {})
+            this.$router.push({name: 'post-page', params: {id: id}})
+        }
+    },     
     async mounted() {
         await this.$store.dispatch('getPostList')
     }     
