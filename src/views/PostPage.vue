@@ -4,7 +4,7 @@
 
         <h1>{{ post.title }}</h1>
 
-        <div class="main-img-block">
+        <div v-if="post.imageList" class="main-img-block">
             <img 
                 :src="post.imageList[0].url" 
                 :alt="post.imageList[0].name"

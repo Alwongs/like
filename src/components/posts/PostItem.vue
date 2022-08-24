@@ -8,7 +8,6 @@
             >
         </div>
 
-
         <div class="text-block">
             <header>
                 <h3>{{ post.title }}</h3>
@@ -74,12 +73,17 @@ export default {
     height: 100%;
     @media (max-width: $mobile-max) {
         width: 100%;
+        padding: 0;
     } 
 }
 header {
     font-size: 16px;
     display: flex;
     justify-content: space-between;
+    h3 {
+        text-align: center;
+        font-size: 21px;
+    }
     span {
         color: grey;
         font-size: 11px;
@@ -91,14 +95,16 @@ header {
 main {
     overflow: hidden;
     flex-grow: 1;
-    font-size: 16px;
-    padding: 8px;
+    padding: 8px 0;
 }
 footer {
     text-align: end;
     font-size: 14px;
     font-style: italic;
     color: $link;
+    @media (max-width: $mobile-max) {
+        font-size: 16px;
+    }    
 }
 
 </style>

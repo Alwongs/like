@@ -11,7 +11,7 @@
                 :key="post.id"
                 :post="post"
                 class="post-item-block"
-                @click="goToItem(post.id)"                
+                @click="goToItem(post)"                
             />
             <li>
                 <a 
@@ -49,9 +49,9 @@ export default {
         }
     },
     methods: {
-        goToItem(id) {
-            this.$store.commit('UPDATE_POST', {})
-            this.$router.push({name: 'post-page', params: {id: id}})
+        goToItem(post) {
+            this.$store.commit('UPDATE_POST', post)
+            this.$router.push({name: 'post-page', params: {id: post.id}})
         }
     }, 
 }

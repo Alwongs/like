@@ -7,7 +7,7 @@
                     :src="require('@/assets/img/jpg/home/excursions.jpg')" 
                     alt="icon"
                 >
-                <p>Экскурсии</p>
+                <h5>Экскурсии</h5>
             </router-link>            
         </li>
         <li class="service-item">
@@ -17,7 +17,7 @@
                     :src="require('@/assets/img/jpg/home/tracking.jpg')" 
                     alt="icon"
                 >
-                <p>Походы</p>
+                <h5>Походы</h5>
             </router-link>              
         </li>
         <li class="service-item">
@@ -27,7 +27,7 @@
                     :src="require('@/assets/img/jpg/home/crimea.jpg')" 
                     alt="icon"
                 >
-                <p>Крым</p>
+                <h5>Крым</h5>
             </router-link>              
         </li>
         <li class="service-item">
@@ -37,7 +37,7 @@
                     :src="require('@/assets/img/jpg/home/ural.jpg')" 
                     alt="icon"
                 >
-                <p>Урал</p>
+                <h5>Урал</h5>
             </router-link>             
         </li>
         <li class="service-item">
@@ -47,7 +47,7 @@
                     :src="require('@/assets/img/jpg/home/photosession.jpg')" 
                     alt="icon"
                 >
-                <p>Фотосессии</p>
+                <h5>Фотосессии</h5>
             </router-link>              
         </li>
     </ul>
@@ -70,11 +70,17 @@ export default {
         padding: 0 32px;
     } 
 }
-.service-item {   
+.service-item {  
     text-align: center;
     width: 120px;    
     cursor: pointer; 
+    h5 {
+        width: 100%;
+        text-align: center;
+    }
     img {
+        width: 100%;
+        height: 100%;
         box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);        
     }
     @media (max-width: $mobile-max) {
@@ -121,6 +127,7 @@ export default {
     }    
 } 
 p {
+    color: white;
     @media (max-width: $mobile-max) {
         color: rgb(39, 68, 129);
     }     
