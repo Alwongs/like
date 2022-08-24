@@ -8,10 +8,10 @@
             >
         </div>
 
-
         <div class="text-block">
             <header>
                 <h3>{{ post.title }}</h3>
+                <span>{{ getDate(post.id) }}</span>                
             </header>
             <main>
                 <p v-html="post.text" class="body"></p>
@@ -49,8 +49,7 @@ export default {
     padding: 15px;
     color: rgb(76, 76, 82);
     cursor: pointer;   
-    //border: 1px solid grey;
-    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
 }
 .image-block {
     background-color: rgb(225, 225, 225);
@@ -62,6 +61,9 @@ export default {
         width: auto;
         height: 100%;
     }
+    @media (max-width: $mobile-max) {
+        display: none;
+    }      
 }
 .text-block {
     display: flex;
@@ -69,9 +71,21 @@ export default {
     padding-left: 8px;
     width: 70%;
     height: 100%;
+    @media (max-width: $mobile-max) {
+        width: 100%;
+    }     
 }
 header {
     font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    span {
+        color: grey;
+        font-size: 11px;
+    }  
+    @media (max-width: $mobile-max) {
+        flex-direction: column;
+    }       
 }
 main {
     overflow: hidden;

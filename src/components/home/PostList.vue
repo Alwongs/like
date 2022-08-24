@@ -65,7 +65,7 @@ export default {
 }
 
 .wrapper {
-    background-color: rgb(236, 236, 236);
+    //background-color: rgb(236, 236, 236);
     padding: 64px;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
         padding: 64px;
@@ -79,7 +79,7 @@ export default {
 }
 .post-item-block {
     height: 200px;
-    margin-bottom: 32px;
+    margin-bottom: 48px;
 }
 .look-more-link {
     color: $link;

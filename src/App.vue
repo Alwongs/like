@@ -37,7 +37,7 @@ export default {
     }      
     @media (max-width: $mobile-max) {
         width: 100%;
-        background-color: rgb(142, 158, 194);     
+        //background-color: rgb(222, 230, 238);     
     } 
 }
 .page-wrap {

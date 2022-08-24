@@ -44,6 +44,7 @@ export default {
 
 .post-item-block {
     margin-bottom: 48px;
+    height: 200px;
 }
 .look-more-link {
     color: white;

@@ -71,6 +71,15 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+
+    // chrome
+    document.body.scrollTop = 0
+    // firefox
+    document.documentElement.scrollTop = 0
+    // safari
+    window.pageYOffset = 0
+
+
     Store.dispatch('initAuth')
     .then(user => {
         if(to.matched.some(route => route.meta.authRequired)) {

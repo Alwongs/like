@@ -66,7 +66,8 @@ export default {
     justify-content: space-around;
     @media (max-width: $mobile-max) {
         flex-direction: column;
-        padding: 64px;
+        justify-content: space-between;        
+        padding: 0 32px;
     } 
 }
 .service-item {   
@@ -82,6 +83,7 @@ export default {
     }      
 }
 .service-item:hover {
+    //border: 3px solid rgb(39, 68, 129);
     img {
         border: 3px solid yellow;      
     }
@@ -100,7 +102,7 @@ export default {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    border: 2px solid white;
+    border: 3px solid white;
     margin: 0 auto;
     margin-bottom: 6px;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
@@ -114,7 +116,13 @@ export default {
     @media (max-width: $mobile-max) {
         width: 100%;
         height: auto;
-        border-radius: 20px;;        
+        border-radius: 20px;
+        border: 3px solid rgb(39, 68, 129);              
     }    
 } 
+p {
+    @media (max-width: $mobile-max) {
+        color: rgb(39, 68, 129);
+    }     
+}
 </style>

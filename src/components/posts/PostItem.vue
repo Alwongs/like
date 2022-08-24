@@ -1,50 +1,26 @@
 <template>
     <li class="post-item">
-        <header class="post-header">
-            <div 
-                class="left"
+        <div class="image-block">
+            <img 
+                v-if="post.imageList"
+                :src="post.imageList[0].url" 
+                :alt="post.imageList[0].name"
             >
-                {{ post.eventType }}
-            </div>
+        </div>
 
-            <div class="right">
-                {{ getDate(post.id) }}
-            </div>
-        </header>
-        <main class="post-body">
-            <h3 class="title">{{ post.title }}</h3>
-            <ul class="image-list">
-                <li               
-                    v-for="image in post.imageList"
-                    class="image-item mr-16"  
-                    :key="image.url"
-                >
-                    <div class="img-block">
-                        <img :src="image.url" :alt="image.name">
-                    </div>
-                </li>
-            </ul>            
-            <p v-html="post.text"></p>
-            <p class="link">
-                <router-link :to="{name: 'post-page', params: {id: post.id}}">
-                    подробнее
-                </router-link>
-            </p>            
-        </main>
-        <footer class="post-footer">
-            <button 
-                class="btn btn__blue"
-                @click="think"
-            >
-                Резерв
-            </button>
-            <button 
-                class="btn btn__red" 
-                @click="book"
-            >
-                Забронировать
-            </button>
-        </footer>
+
+        <div class="text-block">
+            <header>
+                <h3>{{ post.title }}</h3>
+                <span>{{ getDate(post.id) }}</span>
+            </header>
+            <main>
+                <p v-html="post.text" class="body"></p>
+            </main>
+            <footer>
+                подробнее
+            </footer>
+        </div>
     </li>
 </template>
 
@@ -55,12 +31,6 @@ export default {
     name: 'PostItem',
     props: ['post'],
     methods: {
-        book() {
-            alert('Еще не готово! ))')
-        },
-        think() {
-            alert('Тут подумть надо :/')
-        },
         deletePost() {
             this.$store.dispatch('removePost', this.post.id)
         },
@@ -73,66 +43,62 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.post-item {
-    background-color: rgba(255, 255, 255, 0.7);
-    padding: 5px 15px;
-    border-bottom: 1px solid lightgrey;
-    color: rgb(76, 76, 82);
-    @media (max-width: $mobile-max) {
-        padding: 5px 0;
-    }     
-}
 
-.post-header {
+.post-item {
     display: flex;
-    justify-content: space-between;
-    padding: 5px;
-    font-size: 14px;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 15px;
+    color: rgb(76, 76, 82);
+    cursor: pointer;   
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.2);
 }
-.left {
-    &.red {
-        color: red;
-    }
-} 
-.post-body { 
-    h3 {
-        font-size: 20px;    
-        text-align: center;
-        margin-bottom: 12px;
-    }    
-    p {
-        font-size: 18px;   
-        line-height: 26px;     
-    }  
-}
-.img-block {
-    height: 200px;
-    margin-bottom: 16px;
+.image-block {
+    background-color: rgb(225, 225, 225);
+    height: 100%;
+    width: 30%;
+    overflow: hidden;
+    text-align: center;
     img {
+        width: auto;
         height: 100%;
     }
+    @media (max-width: $mobile-max) {
+        display: none;
+    }  
 }
-.image-list {
+.text-block {
     display: flex;
+    flex-direction: column;
+    padding-left: 8px;
+    width: 70%;
+    height: 100%;
+    @media (max-width: $mobile-max) {
+        width: 100%;
+    } 
 }
-.post-footer {
+header {
+    font-size: 16px;
     display: flex;
-    justify-content: space-between; 
-    padding: 8px;   
-}
-.btn {
-    font-size: 18px;
-    padding: 8px 16px;
-    cursor: pointer;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.513);
-    &__blue {
-        background-color: rgb(59, 85, 214);
+    justify-content: space-between;
+    span {
+        color: grey;
+        font-size: 11px;
     }
-    &__red {
-        background-color: rgb(8, 130, 30);        
-    }
+    @media (max-width: $mobile-max) {
+        flex-direction: column;
+    }      
 }
+main {
+    overflow: hidden;
+    flex-grow: 1;
+    font-size: 14px;
+    padding: 8px;
+}
+footer {
+    text-align: end;
+    font-size: 14px;
+    font-style: italic;
+    color: $link;
+}
+
 </style>
