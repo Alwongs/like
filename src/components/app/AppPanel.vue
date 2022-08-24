@@ -55,7 +55,7 @@ export default {
                 },
                 {
                     title: 'Выйти',
-                    route: '#',
+                    route: '/logout',
                 },
             ] :
             [

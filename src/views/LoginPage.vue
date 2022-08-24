@@ -45,8 +45,8 @@
 export default {
     data() {
         return {
-            email: 'elena@like.ru',
-            password: '12345678'
+            email: '',
+            password: ''
         }
     },
     computed: {
