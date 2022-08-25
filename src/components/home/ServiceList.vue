@@ -77,10 +77,7 @@ export default {
     h5 {
         width: 100%;
         text-align: center;
-        font-weight: normal;
-        @media (max-width: $mobile-max) {
-            color: rgb(39, 68, 129);
-        }         
+        font-weight: normal;       
     }
     img {
         width: 100%;
@@ -90,6 +87,10 @@ export default {
     @media (max-width: $mobile-max) {
         width: 100%;
         margin-bottom: 48px;
+        h5 {
+            font-size: 24px;
+            color: rgb(39, 68, 129);
+        }        
     }      
 }
 .service-item:hover {

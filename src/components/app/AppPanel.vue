@@ -21,6 +21,7 @@
                         </router-link>
                     </li>
                     <li 
+                        v-if="isUserAuthenticated"
                         class="nav-item"
                         @click="logout()"
                     >

@@ -7,10 +7,9 @@
                 :class="{ removing: removingImageName === image.name }"
                 class="loaded-item"
             >
-                <img :src="image.url" alt="фотка">
+                <img :src="image.url" alt="фотка" :title="image.name">
                 <div class="remove-btn" @click="deleteImage(image.name)">&times;</div>
                 <div class="loaded-item__info">
-                    <span>{{ image.name }}</span>
                     <span>{{ convertSize(image.size) }}</span>
                 </div>                        
             </li>                
@@ -36,7 +35,7 @@
             @click.prevent="deleteAllImages"
         >
             Удалить все
-        </a>                
+        </a>             
     </div>
 </template>
 
@@ -97,23 +96,12 @@ export default {
 .loaded-item {
     position: relative;  
     border: 1px solid grey;
-    width: 150px;
-    height: 150px;
+    text-align: center;    
+    width: 100px;
+    height: 100px;
     margin-right: 8px;
     margin-bottom: 8px;
-    overflow: hidden;
-    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
-        width: 150px;
-        height: 150px; 
-    }     
-    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
-        width: 150px;
-        height: 150px; 
-    }     
-    @media (max-width: $mobile-max) {
-        width: 200px;
-        height: 200px; 
-    }    
+    overflow: hidden;   
 }
 .loaded-item.removing {
     transform: scale(0);
@@ -121,14 +109,13 @@ export default {
 }
 .loaded-item__info {
     background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    text-align: center;
     position: absolute;
     left: 0;
     bottom: 0;
     width: 100%;
     height: 20px;
+    line-height: 20px;
     font-size: 10px;
     padding: 0 3px;
 }
@@ -164,15 +151,18 @@ export default {
 }
 .progress {
     border: 2px solid rgb(18, 63, 161);
-    width: 150px;
     height: 20px;
+    width: 150px;
     margin-right: 8px;
 }
 .progress-bar {
-    background-color: rgb(18, 63, 161);
-    width: 0;
-    transition: width .22s;    
+    background-color: rgb(18, 63, 161);   
     height: 100%;
+    width: 0;
+    transition: width .22s; 
     color: white;
+    line-height: 18px;
+    font-size: 12px;
+    text-align: center;
 }
 </style>
