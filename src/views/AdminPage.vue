@@ -57,7 +57,6 @@ export default {
             isCreateFormOpen: false,
             isEditFormOpen: false,
             post: {},
-            //tegBody: document.querySelector('#app')
         }
     },
     computed: {
@@ -77,11 +76,9 @@ export default {
     },
     methods: {
         openCreateForm() {
-            //this.tegBody.style.overflow = 'hidden'
             this.isCreateFormOpen = true;
         },
-        closeCreateForm() {  
-            //this.tegBody.style.overflow = 'visible'
+        closeCreateForm() {
             this.isCreateFormOpen = false;            
         },
 
@@ -96,7 +93,8 @@ export default {
     } ,
     async mounted() {
         await this.$store.dispatch('getPostList')
-    }       
+    }    
+
 }
 </script>
 

@@ -77,6 +77,10 @@ export default {
     h5 {
         width: 100%;
         text-align: center;
+        font-weight: normal;
+        @media (max-width: $mobile-max) {
+            color: rgb(39, 68, 129);
+        }         
     }
     img {
         width: 100%;
@@ -85,11 +89,13 @@ export default {
     }
     @media (max-width: $mobile-max) {
         width: 100%;
-        margin-bottom: 32px;
+        margin-bottom: 48px;
     }      
 }
 .service-item:hover {
-    //border: 3px solid rgb(39, 68, 129);
+    h5 {
+        color: yellow;         
+    }
     img {
         border: 3px solid yellow;      
     }

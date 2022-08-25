@@ -78,6 +78,7 @@ export default {
             commit('SET_PROCESSING', true);
             const postId = Date.now();
             const db = getDatabase();
+            post.id = postId
 
             await set(ref(db, `posts/${postId}`), post);
             dispatch('getPostList'); 

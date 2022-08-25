@@ -20,6 +20,12 @@
                             {{ item.title }}
                         </router-link>
                     </li>
+                    <li 
+                        class="nav-item"
+                        @click="logout()"
+                    >
+                        Выйти
+                    </li>
                 </ul>     
             </nav>
             <div 
@@ -53,10 +59,6 @@ export default {
                     title: 'Админка',
                     route: '/helen-ruls',
                 },
-                {
-                    title: 'Выйти',
-                    route: '/logout',
-                },
             ] :
             [
                 {
@@ -86,27 +88,23 @@ export default {
         }
     },
     methods: {
-        goTo(path) {
-            if (path === '/logout') {
-                if (confirm('Вы уверены?')) {
-                    this.$store.dispatch('signOut');
-                    this.$router.push('/'); 
-                    this.isMenuOpen = false;                     
-                    return                                      
-                } else {
-                    return
-                }
+        logout() {
+            if (confirm('Вы уверены?')) {
+                this.$store.dispatch('signOut');
+                this.$router.push('/'); 
+                this.isMenuOpen = false;                     
+                return                                      
+            } else {
+                return
             }
+        },
+        goTo(path) {
             this.$router.push(path);
             this.isMenuOpen = false;
         },
         toggleMenu() {
             this.isMenuOpen = !this.isMenuOpen;
-        },
-        logout() {
-            this.$store.dispatch('signOut');
-            this.$router.push('/');
-        }        
+        },       
     }
 }
 </script>

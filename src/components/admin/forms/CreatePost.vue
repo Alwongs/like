@@ -139,7 +139,6 @@ export default {
             this.isPostTypeOpen = false            
         },
 
-
         async savePost() {
             if (
                 this.postType === '' ||
@@ -158,7 +157,7 @@ export default {
                 imageList: this.postImageList,                
             });
             this.$emit('closeForm')
-        }, 
+        }
     }    
 }
 </script>
@@ -166,7 +165,6 @@ export default {
 <style lang="scss" scoped>
 
 .create-post {
-    //background-color: rgb(173, 196, 169);
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
         width: 100%; 
     }     
@@ -219,13 +217,6 @@ export default {
         background-color: rgb(222, 222, 222);
     }
 }
-
-
-
-
-
-
-
 
 .image-block {
     margin-bottom: 16px;

@@ -3,7 +3,8 @@
         <form action="#" class="form">
             <p v-if="loading" class="loading">Обновление поста...</p>
 
-            <h2 class="form-title">Редактирование</h2>            
+            <h2 class="form-title">Редактирование</h2>  
+            <p>postId: {{ post.id }}</p>          
             <ul class="form-element-list">            
                 <li class="form-item select-type-input">
                     <input 
@@ -60,7 +61,7 @@
         <h1 v-if="getProcessing">Loading...</h1>
         <div class="btn-block">
             <button class="btn mr-16" @click="closeFormHandler">Закрыть</button>
-            <button class="btn btn-submit" type="submit" @click.prevent="updatePost">Сохранить</button>
+            <button class="btn btn-submit" type="submit" @click.prevent="updatePost">Обновить</button>
         </div>
     </div>
 </template>
@@ -140,15 +141,11 @@ export default {
             this.isEventTypeOpen = !this.isEventTypeOpen
             this.isPostTypeOpen = false              
         }, 
-
-
-
         closeFormHandler() {
             this.$store.commit('UPDATE_POST_IMAGE_LIST', [])  
             this.$emit('closeForm')
         },
         async updatePost() {
-
             this.post.imageList = this.postImageList
             if (
                 this.post.title === '' ||
@@ -161,8 +158,11 @@ export default {
             await this.$store.dispatch('updatePost', this.post);
             this.$store.commit('SET_PROCESSING', false);            
             this.$emit('closeForm')
-        },        
-    } ,  
+        }       
+    },
+    mounted() {
+        console.log(this.postForEdit)
+    }   
 }
 </script>
 

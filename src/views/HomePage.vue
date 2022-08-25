@@ -6,6 +6,10 @@
                 alt="главное фото"
             >
             <service-list class="service-list-block" />
+            <div class="slogan">
+                <h1>Like</h1>
+                <p>Клуб активного отдыха</p>
+            </div>
         </div>
         <post-list class="post-list-block"/>
     </main>   

@@ -108,7 +108,7 @@ export default {
     margin-bottom: 8px;
 }
 .img-block {
-    height: 200px;
+    height: 100px;
     margin-bottom: 16px;
     img {
         height: 100%;
