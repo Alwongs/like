@@ -57,8 +57,8 @@ export default {
                     route: '/post-list-page',
                 },
                 {
-                    title: 'Админка',
-                    route: '/helen-ruls',
+                    title: 'Планирование',
+                    route: '/plan-page',
                 },
             ] :
             [

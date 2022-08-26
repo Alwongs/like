@@ -8,6 +8,11 @@ const routes = [
         component: () => import('@/views/HomePage.vue')
     },
     {
+        path: '/plan-page',
+        name: 'plan-page',
+        component: () => import('@/views/PlanPage.vue')
+    },
+    {
         path: '/post-list-page',
         name: 'post-list-page',
         component: () => import('@/views/PostListPage.vue')

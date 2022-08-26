@@ -70,9 +70,9 @@ export default {
         padding: 0 32px;
     } 
 }
-.service-item {  
+.service-item {
     text-align: center;
-    width: 120px;    
+    width: 120px; 
     cursor: pointer; 
     h5 {
         width: 100%;
@@ -80,8 +80,7 @@ export default {
         font-weight: normal;       
     }
     img {
-        width: 100%;
-        height: 100%;
+
         box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, 0.2);        
     }
     @media (max-width: $mobile-max) {
@@ -93,6 +92,28 @@ export default {
         }        
     }      
 }
+.icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid white;
+    margin: 0 auto;
+    margin-bottom: 6px;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        width: 90px;
+        height: 90px;
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        width: 80px;
+        height: 80px; 
+    }     
+    @media (max-width: $mobile-max) {
+        width: 100%;
+        height: auto;
+        border-radius: 20px;
+        border: 3px solid rgb(39, 68, 129);              
+    }    
+}
 .service-item:hover {
     h5 {
         color: yellow;         
@@ -103,7 +124,7 @@ export default {
     p {
         color: yellow;        
     }  
-}  
+}   
 .service-link {
     color: white;
     @media (max-width: $mobile-max) {
@@ -111,28 +132,6 @@ export default {
         text-align: center;
     } 
 }
-.icon {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    border: 3px solid white;
-    margin: 0 auto;
-    margin-bottom: 6px;
-    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
-        width: 90px;
-        height: 90px;
-    }     
-    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
-        width: 90px;
-        height: 90px;  
-    }     
-    @media (max-width: $mobile-max) {
-        width: 100%;
-        height: auto;
-        border-radius: 20px;
-        border: 3px solid rgb(39, 68, 129);              
-    }    
-} 
 p {
     color: white;
     @media (max-width: $mobile-max) {
