@@ -125,6 +125,7 @@ p {
 }
 
 .app-page {
+    position: relative;
     padding: 64px;
     @media (min-width: $desktop-min) and (max-width: $desktop-max) {
         padding: 64px;

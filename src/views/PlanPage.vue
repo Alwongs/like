@@ -2,36 +2,58 @@
     <div class="app-page">
         <p v-if="loading" class="loading">Загрузка...</p>
 
-        <main v-if="!isCreateFormOpen">
-            <h1>Планирование задач</h1>
-            <form action="#" class="form" @submit.prevent="saveTaskHandler">
-                <input 
-                    type="text" 
-                    class="input-task"
-                >
-                <button 
-                    type="submit" 
-                    class="btn btn-submit" 
-                    @click.prevent="saveTaskHandler"
-                >
-                    Сохранить
-                </button>
-            </form>
+        <h1>Список задач</h1>
 
+        <div class="btn-block">
+            <button 
+                v-if="!isCreateFormOpen"
+                class="btn btn-create"
+                @click="openCreateForm"
+            >
+                Создать
+            </button> 
+            <button 
+                v-else
+                class="btn btn-close"
+                @click="closeCreateForm"
+            >
+                Закрыть
+            </button> 
+        </div>
+
+        <create-task 
+            v-if="isCreateFormOpen"
+            @closeForm="closeCreateForm"
+            class="form-block"
+        />
+
+        <main>
+            <ul class="task-list">
+                <task-item 
+                    v-for="(task, index) in taskList" 
+                    :key="task.id"
+                    :taskProp="task" 
+                    :number="(Number(index) + 1)"  
+                                 
+                />
+            </ul>
         </main>
     </div>
 </template>
 
 <script>
+import CreateTask from '@/components/plan/CreateTask.vue'
+import TaskItem from '@/components/plan/TaskItem.vue'
 
 export default {
     name: 'PostListPage',
     components: {
-
+        CreateTask,
+        TaskItem
     },
     data() {
         return {
-            isCreateFormOpen: false
+            isCreateFormOpen: false,
         }
     },
     computed: {
@@ -41,34 +63,50 @@ export default {
         userId() {
             return this.$store.getters.userId;
         },
-        postList() {
-            return this.$store.getters.postList;
+        taskList() {
+            return this.$store.getters.taskList;
         },
     },
     methods: {
-
+        openCreateForm() {
+            this.isCreateFormOpen = true
+        },
+        closeCreateForm() {
+            this.isCreateFormOpen = false
+        }
     },     
     async mounted() {
-
+        await this.$store.dispatch('getTaskList')
     }     
 }
 </script>
 
 <style lang="scss" scoped>
-
-.form {
-    display: flex;
+.loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 32px;
+    font-size: 20px;
+    font-weight: normal;
+    color: blue;
 }
-.input-task {
-    flex: 1 1 100%;
-    height: 40px;
-    margin-right: 16px;
-    padding-left: 8px;
-    outline: none;
-    border: none;
-    border-bottom: 1px solid grey;    
+.form-block {
+    margin-bottom: 64px;
 }
-.btn-submit {
-    flex: 0 0 auto;
+.task-list {
+    //border: 1px solid lightgrey;
+    
+}
+.btn-block {
+    text-align: end;
+    margin-bottom: 32px;
+}
+.btn-create {
+    border: 1px solid green;
+    color: green;
+}
+.btn-close {
+    border: 1px solid grey;
 }
 </style>

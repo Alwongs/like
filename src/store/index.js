@@ -5,6 +5,7 @@ import user from '@/store/modules/user'
 import general from '@/store/modules/general.js'
 import posts from '@/store/modules/posts.js'
 import images from '@/store/modules/images.js'
+import tasks from '@/store/modules/tasks.js'
 
 export default createStore({
 
@@ -14,6 +15,7 @@ export default createStore({
         general,
         user,
         posts,
-        images        
+        images,
+        tasks       
     }
 })
