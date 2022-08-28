@@ -1,17 +1,17 @@
 <template>
     <div class="app-page">
-        <h1 class="title">Login</h1>        
+        <h1 class="title">Login</h1>    
         <div 
+            v-if="error" 
+            class="error-block"
+        >
+            {{ error }}
+        </div>            
+        <form 
             class="form" 
             @submit.prevent="signin"
         >
-            <div 
-                v-if="error" 
-                class="error-block"
-            >
-                {{ error }}
-            </div>
-
+        
             <ul class="input-list">
                 <li class="form-item">
                     <input 
@@ -40,7 +40,7 @@
                     Войти
                 </button>
             </div>
-        </div>
+        </form>
     </div>
 </template>
 

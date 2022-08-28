@@ -1,42 +1,45 @@
 <template>
-    <div class="signup-page">
-        <div class="form">
-            <h1>Register</h1>
-            <div 
-                v-if="error" 
-                class="error"
-            >
-                {{ error }}
-            </div>
-            <div class="input">
-                <input 
-                    v-model="email"
-                    type="text" 
-                    placeholder="email"
-                    required
+    <div class="app-page">
+        <h1 class="title">Register</h1>
+        <div 
+            v-if="error" 
+            class="error"
+        >
+            {{ error }}
+        </div>        
+        <div 
+            class="form"
+            @submit.prevent="signup"            
+        >
+
+            <ul class="input-list">            
+                <li class="form-item">
+                    <input 
+                        v-model="email"
+                        type="text" 
+                        placeholder="email"
+                        required
+                    >
+                </li>
+                <li class="form-item">
+                    <input 
+                        v-model="password"
+                        type="text" 
+                        placeholder="password"
+                        required
+                    >
+                </li>
+            </ul>
+
+            <div class="btn-block">            
+                <button
+                    v-if="!processing" 
+                    type="submit" 
+                    class="btn btn-submit" 
                 >
+                    Сохранить
+                </button>
             </div>
-            <div class="input">
-                <input 
-                    v-model="password"
-                    type="text" 
-                    placeholder="password"
-                    required
-                >
-            </div>
-            <button
-                v-if="!processing" 
-                type="submit" 
-                @click.prevent="signup"
-            >
-                Сохранить
-            </button>
-            <button
-                v-else
-                class="disabled"
-            >
-                Сохранить
-            </button>
         </div>
     </div>
 </template>
@@ -85,25 +88,45 @@ export default {
 <style lang="scss" scoped>
 
 .form {
-    width: 300px;
-    margin-left: 128px;
+    margin: 0 auto;
+    width: 500px;
+    @media (min-width: $desktop-min) and (max-width: $desktop-max) {
+        width: 400px; 
+    }     
+    @media (min-width: $tablet-min) and (max-width: $tablet-max) {
+        width: 70%; 
+    }     
+    @media (max-width: $mobile-max) {
+        width: 100%; 
+    } 
 }
-h1 {
-    margin-bottom: 32px;
+.title {
+    font-size: 24px;
 }
-.input {
-    margin-bottom: 32px;
+.input-list {
+    margin-bottom: 16px;
 }
-button {
-    background: rgb(66, 118, 215);
+.form-item > input {
+    font-size: 18px;     
+    width: 100%;
+    height: 40px;
+    margin-bottom: 16px;
+    padding-left: 8px;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgb(1, 67, 190);
+    color: rgb(1, 67, 190);
+    @media (max-width: $mobile-max) {
+        font-size: 22px;        
+        min-height: 50px;
+    }     
+}
+.btn-block {
+    text-align: end;
+}
+.btn-submit {
+    background-color: rgb(20, 161, 102);
+    font-size: 16px;
     color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-    &.disabled {
-        background-color: rgb(215, 204, 204);
-        cursor: none;
-    }
 }
-
 </style>

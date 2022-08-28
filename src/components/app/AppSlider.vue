@@ -159,6 +159,8 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
     background-size: 12px;
+    background-color: inherit; 
+    border: none;   
     &:hover {
         background-color: $bg-slider-button-hover;
     }
