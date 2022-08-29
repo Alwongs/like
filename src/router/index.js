@@ -10,6 +10,9 @@ const routes = [
     {
         path: '/plan-page',
         name: 'plan-page',
+        meta: {
+            authRequired: true
+        },
         component: () => import('@/views/PlanPage.vue')
     },
     {
@@ -53,12 +56,6 @@ const routes = [
         component: () => import('@/views/PhotosessionPage.vue')
     },
     {
-        path: '/helen-ruls',
-        name: 'helen-ruls',
-        component: () => import('@/views/AdminPage.vue'),
-        meta: { authRequired: true }
-    },
-    {
         path: '/login',
         name: 'login',
         component: () => import('@/views/LoginPage.vue'),
@@ -67,6 +64,15 @@ const routes = [
         path: '/register',
         name: 'register',
         component: () => import('@/views/RegisterPage.vue'),
+      },       
+      {
+        path: '/404',
+        name: '404',
+        component: () => import('@/views/NotFoundPage.vue'),
+      },       
+      {
+        path: '/:pathMatch(.*)*',
+        component: () => import('@/views/NotFoundPage.vue'),
       },       
 ]
 
@@ -91,7 +97,7 @@ router.beforeEach((to, from, next) => {
             if(user) {
                 next();
             } else {
-                next('/signin');
+                next('/404');
             }
         } else {
             next();

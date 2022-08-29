@@ -36,7 +36,11 @@
                 >
             </div>     
 
-            <p v-html="post.text"></p>
+            <div 
+                v-html="post.text" 
+                class="main-text"
+            ></div>
+
             <ul class="image-list">
                 <li               
                     v-for="image in post.imageList"
@@ -118,6 +122,11 @@ export default {
         width: 300px;
     }
 }
+
+.main-text {
+    margin-bottom: 16px;
+}
+
 .img-block {
     height: 100px;
     margin-bottom: 16px;
